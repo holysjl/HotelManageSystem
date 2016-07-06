@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+        <title>房间预订</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="房间类型" />
+                    <h:selectOneMenu id="type"  value="#{bookingController.selected.type}" required="true" label="Type">
+                        <f:selectItem itemLabel="选择一种房间类型" itemValue="" noSelectionOption="true" />
+                        <f:selectItem itemLabel="单人间" itemValue="S" />
+                        <f:selectItem itemLabel="双人间" itemValue="D" />
+                        <f:selectItem itemLabel="三人间" itemValue="T" />
+                        <f:selectItem itemLabel="总统套房" itemValue="P" />
+                    </h:selectOneMenu>
+                    <h:outputLabel value="联系电话" for="tel" />
+                    <h:inputText id="tel" value="#{bookingController.selected.tel}" title="#{bundle.CreateBookingTitle_tel}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_tel}"/>
+                    <h:outputLabel value="客户姓名" for="CName" />
+                    <h:inputText id="CName" value="#{bookingController.selected.CName}" title="#{bundle.CreateBookingTitle_CName}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_CName}"/>
+                    <h:outputLabel value="起始日期" for="dateFrom" />
+                    <h:inputText id="dateFrom" value="#{bookingController.selected.dateFrom}" title="#{bundle.CreateBookingTitle_dateFrom}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_dateFrom}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="结束日期" for="dateTo" />
+                    <h:inputText id="dateTo" value="#{bookingController.selected.dateTo}" title="#{bundle.CreateBookingTitle_dateTo}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_dateTo}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:commandButton value="#{bundle.CreateBookingSaveLink}"  action="#{bookingController.create}" />
+                <h:button outcome="Home" value="Back" />
+                </h:panelGrid>
+                <br />
+                
+        </h:form>
+    </body>
+</html>
