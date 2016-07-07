@@ -18,7 +18,7 @@
                     <p:panel style="width:100%">
                     <p:commandButton id="bookroom" value="预订房间"  action="CreateBooking" />
                     <h:panelGroup rendered="#{bookingController.items.rowCount > 0}" >
-                        <h:dataTable value="#{bookingController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" >
+                        <h:dataTable value="#{bookingController.items}" var="item"  border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListBookingTitle_bookingNo}"/>
