@@ -24,7 +24,8 @@ import javax.faces.model.SelectItem;
 public class BookingController implements Serializable {
 
     private Booking current;
-    private DataModel items = null;
+    //private DataModel items = null;
+    private List<Booking> items;
     @EJB
     private control.BookingFacade ejbFacade;
     private PaginationHelper pagination;
@@ -72,11 +73,7 @@ public class BookingController implements Serializable {
         return "List";
     }
 
-    public String prepareView() {
-        current = (Booking) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
-    }
+
 
     public String prepareCreate() {
         current = new Booking();
@@ -95,11 +92,6 @@ public class BookingController implements Serializable {
         }
     }
 
-    public String prepareEdit() {
-        current = (Booking) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
-    }
 
     public String update() {
         try {
@@ -112,14 +104,6 @@ public class BookingController implements Serializable {
         }
     }
 
-    public String destroy() {
-        current = (Booking) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return "List";
-    }
 
     public String destroyAndView() {
         performDestroy();
@@ -158,9 +142,9 @@ public class BookingController implements Serializable {
         }
     }
 
-    public DataModel getItems() {
+    public List<Booking> getItems() {
         if (items == null) {
-            items = getPagination().createPageDataModel();
+            items = ejbFacade.findBooking();
         }
         return items;
     }
