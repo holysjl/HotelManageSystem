@@ -12,61 +12,81 @@
 
         <h:body >
              <h:form >
+                  
                  <p:outputLabel value="酒店管理系统"  style="font-size: 22px;"/>
             <p:tabView orientation="top" scrollable="true"  style="height:100%; page:full">
                 <p:tab title="客房预订">
-                    <p:panel style="width:100%">
-                    <p:commandButton id="bookroom" value="预订房间"  action="CreateBooking" />
-                    <h:panelGroup rendered="#{bookingController.items.rowCount > 0}" >
-                        <h:dataTable value="#{bookingController.items}" var="item"  border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
+                    <p:panel style="width:100%;">
+                    <p:commandButton id="bookroom" value="预订房间"  onclick="PF('dlg').show();" type="button" />
+                    
+                    <p:dialog header="预定信息" widgetVar="dlg" resizable="false" dynamic="true">
+                        <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel value="房间类型：" />
+                                    <h:selectOneMenu id="type"  value="#{bookingController.selected.type}" required="true" label="Type">
+                                        <f:selectItem itemLabel="选择一种房间类型" itemValue="" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="单人间" itemValue="S" />
+                                        <f:selectItem itemLabel="双人间" itemValue="D" />
+                                        <f:selectItem itemLabel="三人间" itemValue="T" />
+                                        <f:selectItem itemLabel="总统套房" itemValue="P" />
+                                    </h:selectOneMenu>
+                          <h:outputLabel value="联系电话：" for="tel" />
+                                    <p:inputText id="tel" value="#{bookingController.selected.tel}" title="#{bundle.CreateBookingTitle_tel}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_tel}"/>
+                                    <h:outputLabel value="客户姓名：" for="CName" />
+                                    <p:inputText id="CName" value="#{bookingController.selected.CName}" title="#{bundle.CreateBookingTitle_CName}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_CName}"/>
+
+                                    <p:outputLabel for="dateFrom" value="起始日期:" />
+                                   <p:calendar id="dateFrom" value="#{bookingController.selected.dateFrom}" pattern="MM-dd-yyyy" mask="true" />
+
+
+                                     <p:outputLabel for="dateTo" value="结束日期:" />
+                                    <p:calendar id="dateTo" value="#{bookingController.selected.dateTo}" pattern="MM-dd-yyyy" mask="true" />
+                                    
+                            <f:facet name="footer">
+                               
+                                <p:commandButton value="#{bundle.CreateBookingSaveLink}"  actionListener="#{bookingController.create}"  oncomplete="location.reload()"  icon="ui-icon-check"  />
+                            </f:facet>  
+                        </h:panelGrid>
+                    </p:dialog>
+                    
+                    
+                    
+                    <p:dataTable  value="#{bookingController.items}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="500" >
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListBookingTitle_bookingNo}"/>
+                                <h:outputText value="房间类型"/>
                             </f:facet>
-                            <h:outputText value="#{item.bookingNo}"/>
-                        </h:column>
-                        <h:column>
+                            <h:outputText value="#{item.type}" />
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListBookingTitle_type}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.type}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListBookingTitle_tel}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.tel}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListBookingTitle_CName}"/>
+                                <h:outputText value="客户姓名"/>
                             </f:facet>
                             <h:outputText value="#{item.CName}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListBookingTitle_dateFrom}"/>
+                                <h:outputText value="联系方式"/>
                             </f:facet>
-                            <h:outputText value="#{item.dateFrom}"/>
-                        </h:column>
-                        <h:column>
+                            <h:outputText value="#{item.tel}"/>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListBookingTitle_dateTo}"/>
+                                <h:outputText value="开始日期"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateFrom}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="结束日期"/>
                             </f:facet>
                             <h:outputText value="#{item.dateTo}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
                             </h:outputText>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandButton actionListener="#{bookingController.prepareEdit}" value="#{bundle.ListBookingEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandButton actionListener="#{bookingController.destroy}" value="#{bundle.ListBookingDestroyLink}"/>
-                        </h:column>
-                    </h:dataTable>
-                </h:panelGroup>   
+                        </p:column>
+                    </p:dataTable>
+      
                     </p:panel>
                 </p:tab>
                 <p:tab title="住房情况">
