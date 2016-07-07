@@ -31,7 +31,7 @@ public class BookingFacade extends AbstractFacade<Booking> {
         super(Booking.class);
     }
     public List<Booking> findBooking(){
-        TypedQuery<Booking> query = em.createNamedQuery("findAll", Booking.class);
+        TypedQuery<Booking> query = em.createNamedQuery("Booking.findAll", Booking.class);
         return query.getResultList();
     }
 }
