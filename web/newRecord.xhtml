@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    </h:head>
+    <body>
+        <h:form>
+        <p:growl id="msgs" showDetail="true" />
+        <p:panel header="住房信息">
+        <h:panelGrid columns="9" cellpadding="5" style="margin-bottom:10px" >
+        <p:outputLabel value="房间类型" /> 
+        <p:selectOneMenu id="type"  value="#{roomController.selected.type}"   >
+            <p:ajax listener="#{roomController.selectedType}" update="roomRNo"   />
+            <f:selectItem itemLabel="选择房间类型" itemValue="" noSelectionOption="true" />
+            <f:selectItem itemLabel="单人间" itemValue="S"  />
+            <f:selectItem itemLabel="双人间" itemValue="D" />
+            <f:selectItem itemLabel="三人间" itemValue="T" />
+            <f:selectItem itemLabel="总统套房" itemValue="P" />
+        </p:selectOneMenu>
+        <p:outputLabel   for="roomRNo" value="空房查询" />
+        <p:selectOneMenu id="roomRNo"  value="#{recordController.selected.roomRNo}" >
+            <f:selectItems value="#{roomController.rooms}" />
+        </p:selectOneMenu>
+        <p:outputLabel /> 
+        <p:outputLabel /> 
+        <p:outputLabel /> 
+        <p:outputLabel /> 
+        <p:outputLabel /> 
+            <p:outputLabel for="dateFrom" value="起始日期:" />
+            <p:calendar id="dateFrom" value="#{recordController.selected.startDate}" pattern="MM-dd-yyyy" mask="true" />
+            <p:outputLabel for="dateTo" value="结束日期:" />
+            <p:calendar id="dateTo" value="#{recordController.selected.endDate}" pattern="MM-dd-yyyy" mask="true" />
+            <h:outputLabel value="房费：" for="fee" />
+            <p:inputText id="fee" value="#{recordController.selected.paidFee}"   required="true" />
+            <h:outputLabel value="押金：" for="cash" />
+            <p:inputText id="cash" value="#{recordController.selected.cashPledge}"   required="true" />
+            <p:commandButton  value="提交登记信息"  ajax="false"  actionListener="#{recordController.create}"/>
+        </h:panelGrid>
+        </p:panel>
+        <p:panel header="顾客信息">
+            <p:commandButton id="addCustomer" value="添加顾客"  onclick="PF('dlg').show();" type="button" />
+                    <p:dialog header="顾客信息" widgetVar="dlg" resizable="false" dynamic="true">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputLabel value="证件号：" for="id" />
+                            <p:inputText id="id" value="#{customerController.selected.id}"   required="true" />
+                            <h:outputLabel value="姓名：" for="cname" />
+                            <p:inputText id="cname" value="#{customerController.selected.CName}"   required="true" />
+                            <h:outputLabel value="性别：" for="sex" />
+                            <p:selectOneMenu id="sex"  value="#{customerController.selected.sex}">
+                                <f:selectItem itemLabel="选择性别" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="男" itemValue="Male" />
+                                <f:selectItem itemLabel="女" itemValue="Female" />
+                            </p:selectOneMenu>
+                            <h:outputLabel value="联系方式：" for="tel" />
+                            <p:inputText id="tel" value="#{customerController.selected.tel}"   required="true" />
+                            <p:selectOneMenu id="recordno"  value="#{customerController.selected.recordRecordNo}" >
+                                <f:selectItems value="#{recordController.findRecord}" />
+                            </p:selectOneMenu>
+                            <f:facet name="footer">
+                                <p:commandButton value="提交"  actionListener="#{customerController.create}"  oncomplete="location.reload()"  icon="ui-icon-check"  />
+                            </f:facet>  
+                        </h:panelGrid>
+                    </p:dialog>
+            
+            
+            <p:dataTable  value="#{customerController.items}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="500" >
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="姓名"/>
+                            </f:facet>
+                            <h:outputText value="#{item.CName}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="证件号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="性别"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sex}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="联系方式"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sex}"/>
+                        </p:column>
+                    </p:dataTable>
+            
+ 
+        <h:panelGrid columns="9" cellpadding="5" style="margin-bottom:10px"  >
+            <h:outputLabel value="证件号：" for="id1" />
+            <p:inputText id="id1" value="#{recordController.customer1.id}"   required="true" />
+            <h:outputLabel value="姓名：" for="name1" />
+            <p:inputText id="name1" value="#{recordController.customer1.CName}"   required="true" />
+            <h:outputLabel value="性别：" for="sex1" />
+            <p:selectOneMenu id="sex1"  value="#{recordController.customer1.sex}">
+                <f:selectItem itemLabel="选择性别" itemValue="" noSelectionOption="true" />
+                <f:selectItem itemLabel="男" itemValue="Male" />
+                <f:selectItem itemLabel="女" itemValue="Female" />
+            </p:selectOneMenu>
+            <h:outputLabel value="联系方式：" for="tel1" />
+            <p:inputText id="tel1" value="#{recordController.customer1.tel}"   required="true" />
+            <p:selectOneMenu id="recordno"  value="#{recordController.customer1.recordRecordNo}" >
+                <f:selectItems value="#{recordController.findRecord}" />
+            </p:selectOneMenu>
+        </h:panelGrid>
+        </p:panel>
+        
+        </h:form>
+    </body>
+</html>
+
