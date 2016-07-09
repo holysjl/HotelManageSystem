@@ -5,10 +5,16 @@
  */
 package control;
 
+import bupt.Record;
 import bupt.Room;
+import bupt.util.JsfUtil;
+import java.util.List;
 import javax.ejb.Stateless;
+import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -28,5 +34,20 @@ public class RoomFacade extends AbstractFacade<Room> {
     public RoomFacade() {
         super(Room.class);
     }
+    //public List<String> findRoomNo(Room r){
+      //  Query query = em.createNamedQuery("Room.findNoByType");
+      //  query.setParameter("type",r.getType());
+       // return query.getResultList();
+    //}
     
+    public List<Room> findRoomByNo(String s){
+        Query query = em.createNamedQuery("Room.findByRNo");
+        query.setParameter("rNo",s);
+        return query.getResultList();
+    }
+    public List<Room> findRoomNo(Room r){
+        Query query = em.createNamedQuery("Room.findByType");
+        query.setParameter("type",r.getType());
+        return query.getResultList();
+    }
 }

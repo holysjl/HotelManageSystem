@@ -5,10 +5,13 @@
  */
 package control;
 
+import bupt.Booking;
 import bupt.Customer;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -27,6 +30,10 @@ public class CustomerFacade extends AbstractFacade<Customer> {
 
     public CustomerFacade() {
         super(Customer.class);
+    }
+    public List<Customer> findCustomer(){
+        TypedQuery<Customer> query = em.createNamedQuery("Customer.findAll", Customer.class);
+        return query.getResultList();
     }
     
 }

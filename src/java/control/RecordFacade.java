@@ -6,9 +6,15 @@
 package control;
 
 import bupt.Record;
+import bupt.Room;
+import bupt.util.JsfUtil;
+import java.util.List;
 import javax.ejb.Stateless;
+import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -27,6 +33,15 @@ public class RecordFacade extends AbstractFacade<Record> {
 
     public RecordFacade() {
         super(Record.class);
+    }
+    
+    public void addNew(Record record){
+        em.persist(record);
+    }
+    public List<Record> findRecordByNo(Record r){
+        Query query = em.createNamedQuery("Record.findByRecordNo");
+        query.setParameter("recordNo",r.getRecordNo());
+        return query.getResultList();
     }
     
 }
