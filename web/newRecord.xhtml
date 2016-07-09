@@ -42,31 +42,30 @@
         </p:panel>
         <p:panel header="顾客信息">
             <p:commandButton id="addCustomer" value="添加顾客"  onclick="PF('dlg').show();" type="button" />
-                    <p:dialog header="顾客信息" widgetVar="dlg" resizable="false" dynamic="true">
+                    <p:dialog header="顾客信息" widgetVar="dlg" resizable="false" dynamic="true" >
                         <h:panelGrid columns="2" cellpadding="5">
                             <h:outputLabel value="证件号：" for="id" />
-                            <p:inputText id="id" value="#{customerController.selected.id}"   required="true" />
+                            <p:inputText id="id" value="#{customerController.selected.id}"   required="false" />
                             <h:outputLabel value="姓名：" for="cname" />
-                            <p:inputText id="cname" value="#{customerController.selected.CName}"   required="true" />
+                            <p:inputText id="cname" value="#{customerController.selected.CName}"   required="false" />
                             <h:outputLabel value="性别：" for="sex" />
-                            <p:selectOneMenu id="sex"  value="#{customerController.selected.sex}">
-                                <f:selectItem itemLabel="选择性别" itemValue="" noSelectionOption="true" />
+                            <p:selectOneMenu id="sex"  value="#{customerController.selected.sex}" required="false" >
                                 <f:selectItem itemLabel="男" itemValue="Male" />
                                 <f:selectItem itemLabel="女" itemValue="Female" />
                             </p:selectOneMenu>
                             <h:outputLabel value="联系方式：" for="tel" />
-                            <p:inputText id="tel" value="#{customerController.selected.tel}"   required="true" />
+                            <p:inputText id="tel" value="#{customerController.selected.tel}"   required="false" />
                             <p:selectOneMenu id="recordno"  value="#{customerController.selected.recordRecordNo}" >
                                 <f:selectItems value="#{recordController.findRecord}" />
                             </p:selectOneMenu>
                             <f:facet name="footer">
-                                <p:commandButton value="提交"  actionListener="#{customerController.create}"  oncomplete="location.reload()"  icon="ui-icon-check"  />
+                                <p:commandButton value="提交"  actionListener="#{customerController.create}"  update="cdata"  icon="ui-icon-check"  />
                             </f:facet>  
                         </h:panelGrid>
                     </p:dialog>
             
             
-            <p:dataTable  value="#{customerController.items}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="500" >
+            <p:dataTable   id="cdata" value="#{customerController.items}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="500" >
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="姓名"/>
@@ -93,24 +92,6 @@
                         </p:column>
                     </p:dataTable>
             
- 
-        <h:panelGrid columns="9" cellpadding="5" style="margin-bottom:10px"  >
-            <h:outputLabel value="证件号：" for="id1" />
-            <p:inputText id="id1" value="#{recordController.customer1.id}"   required="true" />
-            <h:outputLabel value="姓名：" for="name1" />
-            <p:inputText id="name1" value="#{recordController.customer1.CName}"   required="true" />
-            <h:outputLabel value="性别：" for="sex1" />
-            <p:selectOneMenu id="sex1"  value="#{recordController.customer1.sex}">
-                <f:selectItem itemLabel="选择性别" itemValue="" noSelectionOption="true" />
-                <f:selectItem itemLabel="男" itemValue="Male" />
-                <f:selectItem itemLabel="女" itemValue="Female" />
-            </p:selectOneMenu>
-            <h:outputLabel value="联系方式：" for="tel1" />
-            <p:inputText id="tel1" value="#{recordController.customer1.tel}"   required="true" />
-            <p:selectOneMenu id="recordno"  value="#{recordController.customer1.recordRecordNo}" >
-                <f:selectItems value="#{recordController.findRecord}" />
-            </p:selectOneMenu>
-        </h:panelGrid>
         </p:panel>
         
         </h:form>

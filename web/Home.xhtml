@@ -11,14 +11,12 @@
         </h:head>
 
         <h:body >
-             <h:form >
-                  
-                 <p:outputLabel value="酒店管理系统"  style="font-size: 22px;"/>
-            <p:tabView orientation="top" scrollable="true"  style="height:100%; page:full">
+             <h:form >    
+             <p:growl id="msgs" showDetail="true" />
+            <p:tabView orientation="top"  style="height:100%; page:full">
                 <p:tab title="客房预订">
                     <p:panel style="width:100%;">
                     <p:commandButton id="bookroom" value="预订房间"  onclick="PF('dlg').show();" type="button" />
-                    
                     <p:dialog header="预定信息" widgetVar="dlg" resizable="false" dynamic="true">
                         <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputLabel value="房间类型：" />
@@ -29,15 +27,12 @@
                                         <f:selectItem itemLabel="三人间" itemValue="T" />
                                         <f:selectItem itemLabel="总统套房" itemValue="P" />
                                     </h:selectOneMenu>
-                          <h:outputLabel value="联系电话：" for="tel" />
+                                     <h:outputLabel value="联系电话：" for="tel" />
                                     <p:inputText id="tel" value="#{bookingController.selected.tel}" title="#{bundle.CreateBookingTitle_tel}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_tel}"/>
                                     <h:outputLabel value="客户姓名：" for="CName" />
                                     <p:inputText id="CName" value="#{bookingController.selected.CName}" title="#{bundle.CreateBookingTitle_CName}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_CName}"/>
-
                                     <p:outputLabel for="dateFrom" value="起始日期:" />
                                    <p:calendar id="dateFrom" value="#{bookingController.selected.dateFrom}" pattern="MM-dd-yyyy" mask="true" />
-
-
                                      <p:outputLabel for="dateTo" value="结束日期:" />
                                     <p:calendar id="dateTo" value="#{bookingController.selected.dateTo}" pattern="MM-dd-yyyy" mask="true" />
                                     
@@ -89,70 +84,53 @@
       
                     </p:panel>
                 </p:tab>
+                
+                
                 <p:tab title="住房情况">
-                    <h:form>
-                    <p:growl id="growl" showDetail="true" />
-                    <p:commandButton id="bookroom" value="入住登记"  action="booking" />
-                    <h:dataTable value="#{recordController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
+                    <p:panel style="width:100%;">
+                    <p:button id="newrecord" value="入住登记" outcome="newRecord.xhtml" />              
+                    
+                    <p:dataTable  value="#{recordController.items}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="500" >
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRecordTitle_recordNo}"/>
+                                <h:outputText value="房间号"/>
                             </f:facet>
-                            <h:outputText value="#{item.recordNo}"/>
-                        </h:column>
-                        <h:column>
+                            <h:outputText value="#{item.roomRNo}" />
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRecordTitle_startDate}"/>
+                                <h:outputText value="入住日期"/>
                             </f:facet>
                             <h:outputText value="#{item.startDate}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
                             </h:outputText>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRecordTitle_endDate}"/>
+                                <h:outputText value="退房日期"/>
                             </f:facet>
                             <h:outputText value="#{item.endDate}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
                             </h:outputText>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRecordTitle_paidFee}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.paidFee}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRecordTitle_cashPledge}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.cashPledge}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRecordTitle_roomRNo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.roomRNo}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListRecordTitle_bill}"/>
+                                <h:outputText value="房费"/>
                             </f:facet>
                             <h:outputText value="#{item.bill}"/>
-                        </h:column>
-                        <h:column>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
+                                <h:outputText value="押金"/>
                             </f:facet>
-                            <h:commandLink action="#{recordController.prepareView}" value="#{bundle.ListRecordViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{recordController.prepareEdit}" value="#{bundle.ListRecordEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{recordController.destroy}" value="#{bundle.ListRecordDestroyLink}"/>
-                        </h:column>
-                    </h:dataTable>
-                    </h:form>
+                            <h:outputText value="#{item.cashPledge}"/>
+                        </p:column>
+                    </p:dataTable>
+      
+                    </p:panel>
                 </p:tab>
+                
+                
                 <p:tab title="退房办理">
                     <h:panelGrid columns="2" cellpadding="10">
                         <p:graphicImage name="demo/images/godfather/godfather3.jpg" />
