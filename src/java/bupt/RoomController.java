@@ -5,6 +5,8 @@ import bupt.util.PaginationHelper;
 import control.RoomFacade;
 
 import java.io.Serializable;
+import static java.time.Clock.system;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -23,12 +25,14 @@ public class RoomController implements Serializable {
 
     private Room current;
     private DataModel items = null;
+    private List<Room> rooms;
     @EJB
     private control.RoomFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
     public RoomController() {
+        //roomNos=ejbFacade.findRoom();
     }
 
     public Room getSelected() {
@@ -38,10 +42,16 @@ public class RoomController implements Serializable {
         }
         return current;
     }
-
     private RoomFacade getFacade() {
         return ejbFacade;
     }
+    public List<Room> getRooms(){
+        return rooms;
+    }
+    public void selectedType(){
+        rooms = ejbFacade.findRoomNo(current);
+    }
+    
 
     public PaginationHelper getPagination() {
         if (pagination == null) {

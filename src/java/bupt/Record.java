@@ -41,7 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Record.findByStartDate", query = "SELECT r FROM Record r WHERE r.startDate = :startDate"),
     @NamedQuery(name = "Record.findByEndDate", query = "SELECT r FROM Record r WHERE r.endDate = :endDate"),
     @NamedQuery(name = "Record.findByPaidFee", query = "SELECT r FROM Record r WHERE r.paidFee = :paidFee"),
-    @NamedQuery(name = "Record.findByCashPledge", query = "SELECT r FROM Record r WHERE r.cashPledge = :cashPledge")})
+    @NamedQuery(name = "Record.findByCashPledge", query = "SELECT r FROM Record r WHERE r.cashPledge = :cashPledge"),
+})
 public class Record implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -146,6 +147,8 @@ public class Record implements Serializable {
     public void setBill(Bill bill) {
         this.bill = bill;
     }
+
+     
 
     @XmlTransient
     public Collection<Customer> getCustomerCollection() {

@@ -5,6 +5,7 @@ import bupt.util.PaginationHelper;
 import control.CustomerFacade;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -22,7 +23,7 @@ import javax.faces.model.SelectItem;
 public class CustomerController implements Serializable {
 
     private Customer current;
-    private DataModel items = null;
+    private List<Customer> items;
     @EJB
     private control.CustomerFacade ejbFacade;
     private PaginationHelper pagination;
@@ -66,11 +67,6 @@ public class CustomerController implements Serializable {
         return "List";
     }
 
-    public String prepareView() {
-        current = (Customer) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
-    }
 
     public String prepareCreate() {
         current = new Customer();
@@ -89,11 +85,6 @@ public class CustomerController implements Serializable {
         }
     }
 
-    public String prepareEdit() {
-        current = (Customer) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
-    }
 
     public String update() {
         try {
@@ -106,14 +97,6 @@ public class CustomerController implements Serializable {
         }
     }
 
-    public String destroy() {
-        current = (Customer) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return "List";
-    }
 
     public String destroyAndView() {
         performDestroy();
@@ -152,9 +135,9 @@ public class CustomerController implements Serializable {
         }
     }
 
-    public DataModel getItems() {
+    public List<Customer> getItems() {
         if (items == null) {
-            items = getPagination().createPageDataModel();
+            items = ejbFacade.findCustomer();
         }
         return items;
     }

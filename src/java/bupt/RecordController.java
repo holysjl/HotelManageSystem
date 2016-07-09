@@ -5,6 +5,7 @@ import bupt.util.PaginationHelper;
 import control.RecordFacade;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -22,7 +23,7 @@ import javax.faces.model.SelectItem;
 public class RecordController implements Serializable {
 
     private Record current;
-    private DataModel items = null;
+    private List<Record> items = null;
     @EJB
     private control.RecordFacade ejbFacade;
     private PaginationHelper pagination;
@@ -35,10 +36,15 @@ public class RecordController implements Serializable {
         if (current == null) {
             current = new Record();
             selectedItemIndex = -1;
+            current.setRecordNo(1L);
         }
         return current;
     }
 
+    public List<Record> findRecord(){
+        return ejbFacade.findRecordByNo(current);
+    }
+    
     private RecordFacade getFacade() {
         return ejbFacade;
     }
@@ -66,33 +72,21 @@ public class RecordController implements Serializable {
         return "List";
     }
 
-    public String prepareView() {
-        current = (Record) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
-    }
-
     public String prepareCreate() {
         current = new Record();
         selectedItemIndex = -1;
         return "Create";
     }
 
-    public String create() {
+    public void create() {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordCreated"));
-            return prepareCreate();
+            //return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            //return null;
         }
-    }
-
-    public String prepareEdit() {
-        current = (Record) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
     }
 
     public String update() {
@@ -104,15 +98,6 @@ public class RecordController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
-    }
-
-    public String destroy() {
-        current = (Record) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return "List";
     }
 
     public String destroyAndView() {
@@ -152,9 +137,9 @@ public class RecordController implements Serializable {
         }
     }
 
-    public DataModel getItems() {
+    public List<Record> getItems() {
         if (items == null) {
-            items = getPagination().createPageDataModel();
+            items = ejbFacade.findAll();
         }
         return items;
     }
