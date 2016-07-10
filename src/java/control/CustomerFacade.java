@@ -35,5 +35,10 @@ public class CustomerFacade extends AbstractFacade<Customer> {
         TypedQuery<Customer> query = em.createNamedQuery("Customer.findAll", Customer.class);
         return query.getResultList();
     }
+    public List<Customer> findByRecordNo(Customer r){
+        TypedQuery<Customer> query = em.createNamedQuery("Customer.findByRecord", Customer.class);
+        query.setParameter("recordRecordNo",r.getRecordRecordNo());
+        return query.getResultList();
+    }
     
 }

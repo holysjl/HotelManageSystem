@@ -12,8 +12,8 @@
         <p:panel header="住房信息">
         <h:panelGrid columns="9" cellpadding="5" style="margin-bottom:10px" >
         <p:outputLabel value="房间类型" /> 
-        <p:selectOneMenu id="type"  value="#{roomController.selected.type}"   >
-            <p:ajax listener="#{roomController.selectedType}" update="roomRNo"   />
+        <p:selectOneMenu id="type"  value="#{recordController.type}"   >
+            <p:ajax listener="#{recordController.findAvailableRoom}" update="roomRNo"   />
             <f:selectItem itemLabel="选择房间类型" itemValue="" noSelectionOption="true" />
             <f:selectItem itemLabel="单人间" itemValue="S"  />
             <f:selectItem itemLabel="双人间" itemValue="D" />
@@ -22,7 +22,7 @@
         </p:selectOneMenu>
         <p:outputLabel   for="roomRNo" value="空房查询" />
         <p:selectOneMenu id="roomRNo"  value="#{recordController.selected.roomRNo}" >
-            <f:selectItems value="#{roomController.rooms}" />
+            <f:selectItems value="#{recordController.rooms}" />
         </p:selectOneMenu>
         <p:outputLabel /> 
         <p:outputLabel /> 
@@ -37,7 +37,9 @@
             <p:inputText id="fee" value="#{recordController.selected.paidFee}"   required="true" />
             <h:outputLabel value="押金：" for="cash" />
             <p:inputText id="cash" value="#{recordController.selected.cashPledge}"   required="true" />
-            <p:commandButton  value="提交登记信息"  ajax="false"  actionListener="#{recordController.create}"/>
+            <p:commandButton  value="提交登记信息"  ajax="false"  actionListener="#{recordController.create}" >
+                <p:ajax listener="#{recordController.findRecord}" update="recordno"   />
+            </p:commandButton>
         </h:panelGrid>
         </p:panel>
         <p:panel header="顾客信息">
@@ -55,12 +57,15 @@
                             </p:selectOneMenu>
                             <h:outputLabel value="联系方式：" for="tel" />
                             <p:inputText id="tel" value="#{customerController.selected.tel}"   required="false" />
-                            <p:selectOneMenu id="recordno"  value="#{customerController.selected.recordRecordNo}" >
-                                <f:selectItems value="#{recordController.findRecord}" />
+                            <h:outputLabel value="订单：" for="recordno" />
+                            <p:selectOneMenu id="recordno"  value="#{customerController.selected.recordRecordNo}" required="false">
+                                <f:selectItems value="#{recordController.records}" />
                             </p:selectOneMenu>
                             <f:facet name="footer">
-                                <p:commandButton value="提交"  actionListener="#{customerController.create}"  update="cdata"  icon="ui-icon-check"  />
-                            </f:facet>  
+                                <p:commandButton value="提交"  actionListener="#{customerController.create}"   icon="ui-icon-check"  >
+                                    <p:ajax listener="#{customerController.findByRecordNo}" update="cdata"   />
+                                </p:commandButton>
+                            </f:facet>
                         </h:panelGrid>
                     </p:dialog>
             

@@ -39,7 +39,10 @@ public class CustomerController implements Serializable {
         }
         return current;
     }
-
+    public void findByRecordNo(){
+        items = ejbFacade.findByRecordNo(current);
+    }
+    
     private CustomerFacade getFacade() {
         return ejbFacade;
     }
@@ -136,9 +139,6 @@ public class CustomerController implements Serializable {
     }
 
     public List<Customer> getItems() {
-        if (items == null) {
-            items = ejbFacade.findCustomer();
-        }
         return items;
     }
 

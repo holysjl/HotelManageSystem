@@ -8,6 +8,8 @@ package control;
 import bupt.Record;
 import bupt.Room;
 import bupt.util.JsfUtil;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
@@ -38,9 +40,22 @@ public class RecordFacade extends AbstractFacade<Record> {
     public void addNew(Record record){
         em.persist(record);
     }
-    public List<Record> findRecordByNo(Record r){
-        Query query = em.createNamedQuery("Record.findByRecordNo");
-        query.setParameter("recordNo",r.getRecordNo());
+    public List<Record> findRecord(Record r){
+        Query query = em.createNamedQuery("Record.findRecord");
+        query.setParameter("roomRNo",r.getRoomRNo());
+        query.setParameter("startDate",r.getStartDate());
+        return query.getResultList();
+    }
+    public List<Room> getAvailableRoom(String type){
+        Date d = new Date();
+        Query query = em.createNamedQuery("Record.findAvailableRoom");
+        query.setParameter("type", type);
+        query.setParameter("date", d);
+        return query.getResultList();
+    }
+    public List<Room> findAllRoom(String type){
+        Query query = em.createNamedQuery("Record.findAllRoom");
+        query.setParameter("type", type);
         return query.getResultList();
     }
     

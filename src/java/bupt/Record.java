@@ -37,11 +37,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Record.findAll", query = "SELECT r FROM Record r"),
+    @NamedQuery(name = "Record.findAllRoom", query = "SELECT DISTINCT r.roomRNo FROM Record r WHERE r.roomRNo.type= :type"),
     @NamedQuery(name = "Record.findByRecordNo", query = "SELECT r FROM Record r WHERE r.recordNo = :recordNo"),
     @NamedQuery(name = "Record.findByStartDate", query = "SELECT r FROM Record r WHERE r.startDate = :startDate"),
     @NamedQuery(name = "Record.findByEndDate", query = "SELECT r FROM Record r WHERE r.endDate = :endDate"),
     @NamedQuery(name = "Record.findByPaidFee", query = "SELECT r FROM Record r WHERE r.paidFee = :paidFee"),
     @NamedQuery(name = "Record.findByCashPledge", query = "SELECT r FROM Record r WHERE r.cashPledge = :cashPledge"),
+     @NamedQuery(name = "Record.findRecord", query = "SELECT r FROM Record r WHERE r.roomRNo = :roomRNo AND r.startDate = :startDate"),
+     @NamedQuery(name = "Record.findAvailableRoom", query = "SELECT DISTINCT r.roomRNo FROM Record r WHERE r.roomRNo.type= :type AND r.startDate <= :date AND r.endDate >= :date")
 })
 public class Record implements Serializable {
 

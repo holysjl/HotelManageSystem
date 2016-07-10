@@ -143,9 +143,7 @@ public class BookingController implements Serializable {
     }
 
     public List<Booking> getItems() {
-        if (items == null) {
-            items = ejbFacade.findBooking();
-        }
+        items = ejbFacade.findBooking();
         return items;
     }
 

@@ -2,10 +2,10 @@ package bupt;
 
 import bupt.util.JsfUtil;
 import bupt.util.PaginationHelper;
+import control.RecordFacade;
 import control.RoomFacade;
 
 import java.io.Serializable;
-import static java.time.Clock.system;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -45,13 +45,19 @@ public class RoomController implements Serializable {
     private RoomFacade getFacade() {
         return ejbFacade;
     }
+    
+
+    
+    
     public List<Room> getRooms(){
-        return rooms;
-    }
-    public void selectedType(){
-        rooms = ejbFacade.findRoomNo(current);
+        //rooms = ejbFacade_record.getAvailableRoom();
+        return ejbFacade.findAll();
     }
     
+    public void selectedType(){
+        //rooms = recordcontroller.getAvailableRoom();
+       
+    }
 
     public PaginationHelper getPagination() {
         if (pagination == null) {
@@ -240,5 +246,6 @@ public class RoomController implements Serializable {
         }
 
     }
+    
 
 }

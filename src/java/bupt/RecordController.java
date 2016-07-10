@@ -5,6 +5,7 @@ import bupt.util.PaginationHelper;
 import control.RecordFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -24,6 +25,9 @@ public class RecordController implements Serializable {
 
     private Record current;
     private List<Record> items = null;
+    private List<Record> records;
+    private String type;
+    private List<Room> rooms;
     @EJB
     private control.RecordFacade ejbFacade;
     private PaginationHelper pagination;
@@ -40,9 +44,29 @@ public class RecordController implements Serializable {
         }
         return current;
     }
+    public String getType(){
+        return type;
+    }
+    public void setType(String type){
+        this.type=type;
+    }
+    public List<Room> getRooms(){
+        return rooms;
+    }
+    
+  
+    
+    public void findAvailableRoom(){
+        rooms=ejbFacade.findAllRoom(type);
+        rooms.removeAll(ejbFacade.getAvailableRoom(type));
+    }
 
-    public List<Record> findRecord(){
-        return ejbFacade.findRecordByNo(current);
+    public void findRecord(){
+        records= ejbFacade.findRecord(current);
+    }
+    public List<Record> getRecords(){
+        records= ejbFacade.findRecord(current);
+        return records;
     }
     
     private RecordFacade getFacade() {
@@ -80,6 +104,7 @@ public class RecordController implements Serializable {
 
     public void create() {
         try {
+            records= ejbFacade.findRecord(current);
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordCreated"));
             //return prepareCreate();
