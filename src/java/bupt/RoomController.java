@@ -45,13 +45,9 @@ public class RoomController implements Serializable {
     private RoomFacade getFacade() {
         return ejbFacade;
     }
-    
-
-    
-    
     public List<Room> getRooms(){
-        //rooms = ejbFacade_record.getAvailableRoom();
-        return ejbFacade.findAll();
+        rooms = ejbFacade.findAll();
+        return rooms;
     }
     
     public void selectedType(){

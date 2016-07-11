@@ -7,6 +7,7 @@ package control;
 
 import bupt.Booking;
 import bupt.Customer;
+import bupt.Record;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,9 +36,9 @@ public class CustomerFacade extends AbstractFacade<Customer> {
         TypedQuery<Customer> query = em.createNamedQuery("Customer.findAll", Customer.class);
         return query.getResultList();
     }
-    public List<Customer> findByRecordNo(Customer r){
+    public List<Customer> findByRecordNo(Record recordNo){
         TypedQuery<Customer> query = em.createNamedQuery("Customer.findByRecord", Customer.class);
-        query.setParameter("recordRecordNo",r.getRecordRecordNo());
+        query.setParameter("recordRecordNo",recordNo);
         return query.getResultList();
     }
     

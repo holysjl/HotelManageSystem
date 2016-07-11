@@ -24,6 +24,7 @@ public class CustomerController implements Serializable {
 
     private Customer current;
     private List<Customer> items;
+    private Record tempRecordNo;
     @EJB
     private control.CustomerFacade ejbFacade;
     private PaginationHelper pagination;
@@ -39,8 +40,11 @@ public class CustomerController implements Serializable {
         }
         return current;
     }
-    public void findByRecordNo(){
-        items = ejbFacade.findByRecordNo(current);
+    public Record getTempRecordNo(){
+        return tempRecordNo;
+    }
+    public void setTempRecordNo(Record s){
+        this.tempRecordNo=s;
     }
     
     private CustomerFacade getFacade() {
@@ -81,11 +85,13 @@ public class CustomerController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CustomerCreated"));
+             items = ejbFacade.findByRecordNo(tempRecordNo);
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
+        
     }
 
 
@@ -139,6 +145,7 @@ public class CustomerController implements Serializable {
     }
 
     public List<Customer> getItems() {
+        items = ejbFacade.findByRecordNo(tempRecordNo);
         return items;
     }
 

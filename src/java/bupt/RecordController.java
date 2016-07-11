@@ -23,11 +23,16 @@ import javax.faces.model.SelectItem;
 @SessionScoped
 public class RecordController implements Serializable {
 
+
     private Record current;
     private List<Record> items = null;
     private List<Record> records;
     private String type;
     private List<Room> rooms;
+    private String roomNo;
+    private List<Record> checkrecords;
+    private List<Integer> checkcash;
+    private List<Integer> checkfee;
     @EJB
     private control.RecordFacade ejbFacade;
     private PaginationHelper pagination;
@@ -50,6 +55,28 @@ public class RecordController implements Serializable {
     public void setType(String type){
         this.type=type;
     }
+    public String getRoomNo(){
+        return roomNo;
+    }
+    public void setRoomNo(String roomNo){
+        this.roomNo = roomNo;
+    }
+    public List<Record> getCheckrecords(){
+        return checkrecords;
+    }
+    public List<Integer> getCheckcash(){
+        return checkcash;
+    }
+    public List<Integer> getCheckfee(){
+        return checkfee;
+    }
+    
+    public void searchRecord(){
+        checkrecords = ejbFacade.findByRoomNo(roomNo);
+        checkfee = ejbFacade.findFee(roomNo);
+        checkcash = ejbFacade.findCash(roomNo);
+    }
+    
     public List<Room> getRooms(){
         return rooms;
     }
@@ -163,9 +190,7 @@ public class RecordController implements Serializable {
     }
 
     public List<Record> getItems() {
-        if (items == null) {
-            items = ejbFacade.findAll();
-        }
+        items = ejbFacade.findAllSelected();
         return items;
     }
 

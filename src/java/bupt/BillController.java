@@ -23,6 +23,15 @@ public class BillController implements Serializable {
 
     private Bill current;
     private DataModel items = null;
+    private Integer fee;
+    private Integer cashPledge;
+    private int extraMoney =0;
+    private boolean value1;
+    private boolean value2;
+    private boolean value3;
+    private boolean value4;
+    private boolean value5;
+    
     @EJB
     private control.BillFacade ejbFacade;
     private PaginationHelper pagination;
@@ -37,6 +46,92 @@ public class BillController implements Serializable {
             selectedItemIndex = -1;
         }
         return current;
+    }
+    public Integer getFee(){
+        return fee;
+    }
+    public void setFee(Integer fee){
+        this.fee = fee;
+    }
+    public Integer getCashPledge(){
+        return cashPledge;
+    }
+    public void setCashPledge(Integer cash){
+        this.cashPledge = cash;
+    }
+    public int getExtraMoney() {
+        return extraMoney;
+    }
+
+    public void setExtraMoney(int extraMoney) {
+        this.extraMoney = extraMoney;
+    }
+    
+    public void addExtra(boolean value,int _money)
+    {
+        if (value == true) {
+            extraMoney += _money;
+        }
+    }
+    public boolean isValue1() {
+        return value1;
+    }
+
+    public void setValue1(boolean value1) {
+        this.value1 = value1;
+    }
+
+    public boolean isValue2() {
+        return value2;
+    }
+
+    public void setValue2(boolean value2) {
+        this.value2 = value2;
+    }
+
+    public boolean isValue3() {
+        return value3;
+    }
+
+    public void setValue3(boolean value3) {
+        this.value3 = value3;
+    }
+
+    public boolean isValue4() {
+        return value4;
+    }
+
+    public void setValue4(boolean value4) {
+        this.value4 = value4;
+    }
+
+    public boolean isValue5() {
+        return value5;
+    }
+
+    public void setValue5(boolean value5) {
+        this.value5 = value5;
+    }
+    public void sum(){
+        current.setTotalFee(fee+extraMoney);
+        current.setExtraFee(fee+extraMoney-cashPledge);
+        current.setRecordRecordNo(current.getRecord().getRecordNo());
+        create();
+    }
+    public void add1(){
+        addExtra(value1, 20);
+    }
+    public void add2(){
+        addExtra(value2, 20);
+    }
+    public void add3(){
+        addExtra(value3, 10);
+    }
+    public void add4(){
+        addExtra(value4, 10);
+    }
+    public void add5(){
+        addExtra(value5, 10);
     }
 
     private BillFacade getFacade() {
@@ -72,20 +167,13 @@ public class BillController implements Serializable {
         return "View";
     }
 
-    public String prepareCreate() {
-        current = new Bill();
-        selectedItemIndex = -1;
-        return "Create";
-    }
 
-    public String create() {
+    public void create() {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("BillCreated"));
-            return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
         }
     }
 

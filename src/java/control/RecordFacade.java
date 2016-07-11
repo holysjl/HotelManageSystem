@@ -7,16 +7,12 @@ package control;
 
 import bupt.Record;
 import bupt.Room;
-import bupt.util.JsfUtil;
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 /**
  *
@@ -36,10 +32,6 @@ public class RecordFacade extends AbstractFacade<Record> {
     public RecordFacade() {
         super(Record.class);
     }
-    
-    public void addNew(Record record){
-        em.persist(record);
-    }
     public List<Record> findRecord(Record r){
         Query query = em.createNamedQuery("Record.findRecord");
         query.setParameter("roomRNo",r.getRoomRNo());
@@ -58,5 +50,37 @@ public class RecordFacade extends AbstractFacade<Record> {
         query.setParameter("type", type);
         return query.getResultList();
     }
+    
+    public List<Record> findAllSelected(){
+        Date d = new Date();
+        Query query = em.createNamedQuery("Record.findAllSelected");
+        query.setParameter("date", d);
+        return query.getResultList();
+    }
+    public List<Record> findByRoomNo(String rNo){
+        Date d = new Date();
+        Query query = em.createNamedQuery("Record.findByRoomNo");
+        query.setParameter("rNo", rNo);
+        query.setParameter("date", d);
+        return query.getResultList();
+    
+    }
+    public List<Integer> findCash(String rNo){
+        Date d = new Date();
+        Query query = em.createNamedQuery("Record.findCash");
+        query.setParameter("rNo", rNo);
+        query.setParameter("date", d);
+        return query.getResultList();
+    
+    }
+        public List<Integer> findFee(String rNo){
+        Date d = new Date();
+        Query query = em.createNamedQuery("Record.findFee");
+        query.setParameter("rNo", rNo);
+        query.setParameter("date", d);
+        return query.getResultList();
+    
+    }
+    
     
 }

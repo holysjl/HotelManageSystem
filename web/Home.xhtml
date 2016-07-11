@@ -14,7 +14,7 @@
              <h:form >    
              <p:growl id="msgs" showDetail="true" />
             <p:tabView orientation="top"  style="height:100%; page:full">
-                <p:tab title="客房预订">
+                <p:tab title="客房预订" >
                     <p:panel style="width:100%;">
                     <p:commandButton id="bookroom" value="预订房间"  onclick="PF('dlg').show();" type="button" />
                     <p:dialog header="预定信息" widgetVar="dlg" resizable="false" dynamic="true">
@@ -88,7 +88,10 @@
                 
                 <p:tab title="住房情况">
                     <p:panel style="width:100%;">
-                    <p:button id="newrecord" value="入住登记" outcome="newRecord.xhtml" />              
+                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                            <p:button id="newrecord" value="入住登记" outcome="newRecord.xhtml" />          
+                            <p:button id="newrecord" value="退房办理" outcome="checkOut.xhtml" />   
+                        </h:panelGrid>
                     
                     <p:dataTable  value="#{recordController.items}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="500" >
                         <p:column>
@@ -131,7 +134,7 @@
                 </p:tab>
                 
                 
-                <p:tab title="退房办理">
+                <p:tab title="业务查询">
                     <h:panelGrid columns="2" cellpadding="10">
                         <p:graphicImage name="demo/images/godfather/godfather3.jpg" />
                         <h:outputText value="After a break of more than 15 years..." />
