@@ -6,6 +6,7 @@
 package control;
 
 import bupt.Booking;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,7 +32,9 @@ public class BookingFacade extends AbstractFacade<Booking> {
         super(Booking.class);
     }
     public List<Booking> findBooking(){
+        Date date = new Date();
         TypedQuery<Booking> query = em.createNamedQuery("Booking.findAll", Booking.class);
+        query.setParameter("date", date);
         return query.getResultList();
     }
 }

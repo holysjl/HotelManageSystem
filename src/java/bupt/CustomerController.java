@@ -95,40 +95,37 @@ public class CustomerController implements Serializable {
     }
 
     public void showQueryResults(ActionEvent ae) {
-
-        //items1 = ejbFacade.searchByName1(cname);
-        //items2 = ejbFacade.searchByName2(cname);
+           
         boolean isNull1 = cname.isEmpty();
-        boolean isNull2 = sdate.before(new Date());
-        boolean isNull3 = edate.before(new Date());
-
+        boolean isNull2=(sdate==null);
+        boolean isNull3 =(edate==null);
         if (!isNull1 && isNull2 && isNull3) {
             items1 = ejbFacade.searchByName1(cname);
-            items2 = ejbFacade.searchByName2(cname);
+            //items2 = ejbFacade.searchByName2(cname);
         }
         if (isNull1 && !isNull2 && isNull3) {
             items1 = ejbFacade.searchBySDate1(sdate);
-            items2 = ejbFacade.searchBySDate2(sdate);
+            //items2 = ejbFacade.searchBySDate2(sdate);
         }
         if (isNull1 && isNull2 && !isNull3) {
             items1 = ejbFacade.searchByEDate1(edate);
-            items2 = ejbFacade.searchByEDate2(edate);
+            //items2 = ejbFacade.searchByEDate2(edate);
         }
         if (!isNull1 && !isNull2 && isNull3) {
             items1 = ejbFacade.searchByNameSDate1(cname, sdate);
-            items2 = ejbFacade.searchByNameSDate2(cname, sdate);
+            //items2 = ejbFacade.searchByNameSDate2(cname, sdate);
         }
         if (!isNull1 && isNull2 && !isNull3) {
             items1 = ejbFacade.searchByNameEDate1(cname, edate);
-            items2 = ejbFacade.searchByNameEDate2(cname, edate);
+            //items2 = ejbFacade.searchByNameEDate2(cname, edate);
         }
         if (isNull1 && !isNull2 && !isNull3) {
             items1 = ejbFacade.searchBySEDate1(sdate, edate);
-            items2 = ejbFacade.searchBySEDate2(sdate, edate);
+            //items2 = ejbFacade.searchBySEDate2(sdate, edate);
         }
         if (!isNull1 && !isNull2 && !isNull3) {
             items1 = ejbFacade.searchByNameSEDate1(cname, sdate, edate);
-            items2 = ejbFacade.searchByNameSEDate2(cname, sdate, edate);
+            //items2 = ejbFacade.searchByNameSEDate2(cname, sdate, edate);
         }
 
     }
@@ -168,6 +165,9 @@ public class CustomerController implements Serializable {
 
     public String create() {
         try {
+            if (!(ejbFacade.findByID(current)).isEmpty()) {
+                throw new Exception();
+            }
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CustomerCreated"));
             items = ejbFacade.findByRecordNo(tempRecordNo);
@@ -228,7 +228,6 @@ public class CustomerController implements Serializable {
     }
 
     public List<Customer> getItems() {
-        items = ejbFacade.findByRecordNo(tempRecordNo);
         return items;
     }
 

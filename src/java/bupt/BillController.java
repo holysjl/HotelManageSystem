@@ -31,6 +31,7 @@ public class BillController implements Serializable {
     private boolean value3;
     private boolean value4;
     private boolean value5;
+    private boolean value6;
     
     @EJB
     private control.BillFacade ejbFacade;
@@ -112,6 +113,13 @@ public class BillController implements Serializable {
     public void setValue5(boolean value5) {
         this.value5 = value5;
     }
+     public boolean isValue6() {
+        return value6;
+    }
+
+    public void setValue6(boolean value6) {
+        this.value6 = value6;
+    }
     public void sum(){
         current.setTotalFee(fee+extraMoney);
         current.setExtraFee(fee+extraMoney-cashPledge);
@@ -132,6 +140,9 @@ public class BillController implements Serializable {
     }
     public void add5(){
         addExtra(value5, 10);
+    }
+     public void add6(){
+        addExtra(value6, 10);
     }
 
     private BillFacade getFacade() {

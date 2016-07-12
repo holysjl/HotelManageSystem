@@ -9,20 +9,18 @@
         <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
     <h:body>
-        大方之家酒店管理系统
-        <h2>退房</h2>
-
-        <h:form>
+        <h:form >
             <p:growl id="msgs" showDetail="true" />
-            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" >
-                
-                <h:outputLabel value="房间号" for="roomNo" />
-                <p:inputText id="roomRNo" value="#{recordController.roomNo}"/>
-            </h:panelGrid>
-                
+            <h:panelGrid columns="2" cellpadding="5" >
+                <p:panel header ="退房">
+                    <h:outputLabel value="房间号" for="roomNo" />
+                    <p:inputText id="roomRNo" value="#{recordController.roomNo}"/>
+                      
+        
+
             <p:commandButton value="查询房间记录"  actionListener="#{recordController.searchRecord}"  update="roomrecord" >
                 </p:commandButton>
-                <h:panelGrid id="roomrecord" columns="2" style="margin-bottom:10px" cellpadding="5" >
+                <h:panelGrid id="roomrecord" columns="2" style="margin-bottom:10px" cellpadding="5" > 
                  <h:outputLabel value="房费" for="fee"/>
                  <p:selectOneMenu id="fee"  value="#{billController.fee}" >
                      <f:selectItems value="#{recordController.checkfee}" />
@@ -33,14 +31,14 @@
                      <f:selectItems value="#{recordController.checkcash}" />
                 </p:selectOneMenu>
                  
-                <h:outputLabel value="订单号" for="recordNo"/>
-                <p:selectOneMenu id="recordNo"  value="#{billController.selected.record}" >
+                 <h:outputLabel value="订单号" for="recordNo" rendered="false"/>
+                 <p:selectOneMenu id="recordNo"  value="#{billController.selected.record}" rendered="false" >
                      <f:selectItems value="#{recordController.checkrecords}" />
                 </p:selectOneMenu>
-            </h:panelGrid>
+             </h:panelGrid> 
             
             
-              <h:panelGrid id="thinglist" columns="2" style="margin-bottom:10px" cellpadding="5" >
+              <h:panelGrid id="thinglist" columns="4" style="margin-bottom:10px" cellpadding="5" >
                 <p:outputLabel value="避孕用品: " for="t1"/>
                 <p:selectBooleanCheckbox  id="t1" value="#{billController.value1}" required="false" >
                     <p:ajax listener="#{billController.add1}"/>
@@ -65,6 +63,11 @@
                 <p:selectBooleanCheckbox id="t5" value="#{billController.value5}" required="false">   
                     <p:ajax listener="#{billController.add5}"/>    
                 </p:selectBooleanCheckbox>
+                
+                <p:outputLabel value="方便面: " for="t6"/>
+                <p:selectBooleanCheckbox  id="t6" value="#{billController.value6}" required="false" >
+                    <p:ajax listener="#{billController.add6}"/>
+                </p:selectBooleanCheckbox>
             </h:panelGrid>
 
             <p:commandButton value="Submit"  actionListener="#{billController.sum}"  update="display" oncomplete="PF('dlg').show()" />
@@ -76,6 +79,9 @@
                 </h:panelGrid>
             </p:dialog>
             
+            
+        </p:panel> 
+        </h:panelGrid>
             
                 
      

@@ -34,9 +34,7 @@ public class BookingController implements Serializable {
 
     public BookingController() {
     }
-    
-    
-    
+
     
     public Booking getSelected() {
         if (current == null) {

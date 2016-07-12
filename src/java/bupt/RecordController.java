@@ -49,6 +49,11 @@ public class RecordController implements Serializable {
         }
         return current;
     }
+    public String endProgram(){
+        current = new Record();
+        selectedItemIndex = -1;
+        return "Home";
+    }
     public String getType(){
         return type;
     }
@@ -92,7 +97,7 @@ public class RecordController implements Serializable {
         records= ejbFacade.findRecord(current);
     }
     public List<Record> getRecords(){
-        records= ejbFacade.findRecord(current);
+        //records= ejbFacade.findRecord(current);
         return records;
     }
     
@@ -123,22 +128,22 @@ public class RecordController implements Serializable {
         return "List";
     }
 
-    public String prepareCreate() {
-        current = new Record();
-        selectedItemIndex = -1;
-        return "Create";
-    }
 
     public void create() {
+     
         try {
-            records= ejbFacade.findRecord(current);
+            //records= ejbFacade.findRecord(current);
             getFacade().create(current);
+            findRecord();
+            findAvailableRoom();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordCreated"));
             //return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             //return null;
         }
+        
+       
     }
 
     public String update() {
