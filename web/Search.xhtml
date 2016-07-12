@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <title>QueryPage</title>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <p:growl id="msgs" showDetail="true" />
+            <p:panel id = "query_panel" header="查询">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="name" value="姓名: " />
+                    <p:inputText id="name" value="#{customerController.cname}" />
+
+                    <p:outputLabel for="startDate" value="开始日期: " />
+                    <p:calendar id="startDate" value="#{customerController.sdate}" pattern="yyyy-MM-dd" maxdate="7/10/16" />
+
+                    <p:outputLabel for="endDate" value="结束日期: " />
+                    <p:calendar id="endDate" value="#{customerController.edate}" pattern="yyyy-MM-dd" maxdate="7/10/16"/>
+                </h:panelGrid>
+
+                <p:separator />
+
+                <p:commandButton value="提交" update="customer_query" actionListener="#{customerController.showQueryResults}">
+                
+            
+                </p:commandButton>
+
+                <p:separator />
+
+                <p:dataTable id = "customer_query" var ="item1" value="#{customerController.items1}" 
+                             resizableColumns="true" draggableColumns="true" style="border-style: none;">
+                    <p:column headerText="Record" sortBy="query.cName">
+                        <h:outputText value="#{item1.CName}" />
+                    </p:column>
+
+                    <p:column headerText="性别" sortBy="query.sex">
+                        <h:outputText value="#{item1.sex}" />
+                    </p:column>
+
+                    <p:column headerText="ID" sortBy="query.id">
+                        <h:outputText value="#{item1.id}" />
+                    </p:column>
+
+                    <p:column headerText="电话" sortBy ="query.tel">
+                        <h:outputText value="#{item1.tel}" />
+                    </p:column>
+                    <p:column headerText="房间号" sortBy ="query.tel">
+                        <h:outputText value="#{item1.recordRecordNo.roomRNo}" />
+                    </p:column>
+                    <p:column headerText="开始日期" sortBy ="query.tel">
+                        <h:outputText value="#{item1.recordRecordNo.startDate}" />
+                    </p:column>
+                    <p:column headerText="结束日期" sortBy ="query.tel">
+                        <h:outputText value="#{item1.recordRecordNo.endDate}" />
+                    </p:column>
+                </p:dataTable>
+                
+                
+
+
+             
+
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

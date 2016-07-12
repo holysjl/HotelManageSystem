@@ -31,6 +31,8 @@ public class CustomerController implements Serializable {
     private Date sdate;
     private Date edate;
 
+    
+    
     private List<Customer> items1 = null;
     private List<Record> items2 = null;
     @EJB
@@ -48,12 +50,15 @@ public class CustomerController implements Serializable {
         }
         return current;
     }
-    public Record getTempRecordNo(){
+
+    public Record getTempRecordNo() {
         return tempRecordNo;
     }
-    public void setTempRecordNo(Record s){
-        this.tempRecordNo=s;
+
+    public void setTempRecordNo(Record s) {
+        this.tempRecordNo = s;
     }
+
     public String getCname() {
         return cname;
     }
@@ -79,15 +84,20 @@ public class CustomerController implements Serializable {
     }
 
     public List<Customer> getItems1() {
+        
         return items1;
     }
 
     public List<Record> getItems2() {
+        
+
         return items2;
     }
 
     public void showQueryResults(ActionEvent ae) {
 
+        //items1 = ejbFacade.searchByName1(cname);
+        //items2 = ejbFacade.searchByName2(cname);
         boolean isNull1 = cname.isEmpty();
         boolean isNull2 = sdate.before(new Date());
         boolean isNull3 = edate.before(new Date());
@@ -122,13 +132,7 @@ public class CustomerController implements Serializable {
         }
 
     }
-    
-    
-    
-    
-    
-    
-    
+
     private CustomerFacade getFacade() {
         return ejbFacade;
     }
@@ -156,7 +160,6 @@ public class CustomerController implements Serializable {
         return "List";
     }
 
-
     public String prepareCreate() {
         current = new Customer();
         selectedItemIndex = -1;
@@ -167,15 +170,14 @@ public class CustomerController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CustomerCreated"));
-             items = ejbFacade.findByRecordNo(tempRecordNo);
+            items = ejbFacade.findByRecordNo(tempRecordNo);
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
-        
-    }
 
+    }
 
     public String update() {
         try {
@@ -187,7 +189,6 @@ public class CustomerController implements Serializable {
             return null;
         }
     }
-
 
     public String destroyAndView() {
         performDestroy();

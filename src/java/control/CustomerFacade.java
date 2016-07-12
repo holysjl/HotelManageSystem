@@ -44,13 +44,10 @@ public class CustomerFacade extends AbstractFacade<Customer> {
         query.setParameter("recordRecordNo",recordNo);
         return query.getResultList();
     }
-    public boolean validDate(String date) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String currentTime = df.format(System.currentTimeMillis());
-        return (date.compareTo(currentTime) <= 0);
-    }
 
-    public List<Customer> searchByName1(String name) {
+    
+    
+     public List<Customer> searchByName1(String name) {
         Query q = em.createNamedQuery("Customer.findByCName", Customer.class);
         q.setParameter("cName", name);
         return q.getResultList();
