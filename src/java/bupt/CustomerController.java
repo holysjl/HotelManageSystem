@@ -5,6 +5,8 @@ import bupt.util.PaginationHelper;
 import control.CustomerFacade;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -99,6 +101,7 @@ public class CustomerController implements Serializable {
         boolean isNull1 = cname.isEmpty();
         boolean isNull2=(sdate==null);
         boolean isNull3 =(edate==null);
+        
         if (!isNull1 && isNull2 && isNull3) {
              items1 = ejbFacade.searchByName1(cname);     
             items2 = ejbFacade.searchByName2(cname);
@@ -121,13 +124,59 @@ public class CustomerController implements Serializable {
             items2 = ejbFacade.searchByNameEDate2(cname, edate);
         }
         if (isNull1 && !isNull2 && !isNull3) {
-            items1 = ejbFacade.searchBySEDate1(sdate, edate);
+            
+            try {
+        if (sdate.before(edate)){
+               items1 = ejbFacade.searchBySEDate1(sdate, edate);
             items2 = ejbFacade.searchBySEDate2(sdate, edate);
+               
+               
+            
+            }
+            else {
+                Exception e = new Exception();
+                throw e;
+            }
+            //return prepareCreate();
+        } catch (Exception e) {
+            items1=ejbFacade.findnull1();
+            items2=ejbFacade.findnull2();
+        }
+            
+            
+            
+            
         }
         if (!isNull1 && !isNull2 && !isNull3) {
-            items1 = ejbFacade.searchByNameSEDate1(cname, sdate, edate);
+                try {
+        if (sdate.before(edate)){
+              items1 = ejbFacade.searchByNameSEDate1(cname, sdate, edate);
             items2 = ejbFacade.searchByNameSEDate2(cname, sdate, edate);
+               
+               
+            
+            }
+            else {
+                Exception e = new Exception();
+                throw e;
+            }
+            //return prepareCreate();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            items1=ejbFacade.findnull1();
+            items2=ejbFacade.findnull2();
         }
+           
+        }
+        if(isNull1 && isNull2 && isNull3){
+            items1=ejbFacade.findnull1();
+            items2=ejbFacade.findnull2();
+        }
+        
+        
+        
+        
+      
 
     }
 

@@ -33,19 +33,19 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Customer.findByTel", query = "SELECT c FROM Customer c WHERE c.tel = :tel"),
     @NamedQuery(name = "Customer.findByRecord", query = "SELECT c FROM Customer c WHERE c.recordRecordNo = :recordRecordNo"),
     @NamedQuery(name = "Customer.findByCName", query = "SELECT c FROM Customer c WHERE c.cName = :cName"),
-    @NamedQuery(name = "Customer.findSDate1", query = "SELECT DISTINCT p FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate"),
-    @NamedQuery(name = "Customer.findEDate1", query = "SELECT DISTINCT p FROM Customer p JOIN p.recordRecordNo s WHERE s.startDate<=:endDate"),
-    @NamedQuery(name = "Customer.findNameSDate1", query = "SELECT DISTINCT p FROM Customer p JOIN p.recordRecordNo s WHERE p.cName=:cName AND s.endDate>= :startDate"),
-    @NamedQuery(name = "Customer.findNameEDate1", query = "SELECT DISTINCT p FROM Customer p JOIN p.recordRecordNo s WHERE p.cName =:cName AND s.startDate<=:endDate"),
-    @NamedQuery(name = "Customer.findSEDate1", query = "SELECT DISTINCT p FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND s.startDate<=:endDate"),
-    @NamedQuery(name = "Customer.findNameSEDate1", query = "SELECT DISTINCT p FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND s.startDate<=:endDate AND p.cName=:cName"),
-    @NamedQuery(name = "Customer.findName2",query = "SELECT DISTINCT s FROM Customer p JOIN p.recordRecordNo s WHERE p.cName=:cName"),
-    @NamedQuery(name = "Customer.findSDate2", query = "SELECT DISTINCT s FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate"),
-    @NamedQuery(name = "Customer.findEDate2", query = "SELECT DISTINCT s FROM Customer p JOIN p.recordRecordNo s WHERE s.startDate<=:endDate"),
-    @NamedQuery(name = "Customer.findNameSDate2", query = "SELECT DISTINCT s FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND p.cName=:cName"),
-    @NamedQuery(name = "Customer.findNameEDate2", query = "SELECT DISTINCT s FROM Customer p JOIN p.recordRecordNo s WHERE s.startDate<=:endDate AND p.cName=:cName"),
-    @NamedQuery(name = "Customer.findSEDate2", query = "SELECT DISTINCT s FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND s.startDate<=:endDate"),
-    @NamedQuery(name = "Customer.findNameSEDate2", query = "SELECT DISTINCT s FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND s.startDate<=:endDate AND p.cName=:cName")})
+    @NamedQuery(name = "Customer.findSDate1", query = "SELECT  p FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate"),
+    @NamedQuery(name = "Customer.findEDate1", query = "SELECT  p FROM Customer p JOIN p.recordRecordNo s WHERE s.startDate<=:endDate"),
+    @NamedQuery(name = "Customer.findNameSDate1", query = "SELECT  p FROM Customer p JOIN p.recordRecordNo s WHERE p.cName=:cName AND s.endDate>= :startDate"),
+    @NamedQuery(name = "Customer.findNameEDate1", query = "SELECT  p FROM Customer p JOIN p.recordRecordNo s WHERE p.cName =:cName AND s.startDate<=:endDate"),
+    @NamedQuery(name = "Customer.findSEDate1", query = "SELECT  p FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND s.startDate<=:endDate"),
+    @NamedQuery(name = "Customer.findNameSEDate1", query = "SELECT  p FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND s.startDate<=:endDate AND p.cName=:cName"),
+    @NamedQuery(name = "Customer.findName2",query = "SELECT  s FROM Customer p JOIN p.recordRecordNo s WHERE p.cName=:cName"),
+    @NamedQuery(name = "Customer.findSDate2", query = "SELECT  s FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate"),
+    @NamedQuery(name = "Customer.findEDate2", query = "SELECT  s FROM Customer p JOIN p.recordRecordNo s WHERE s.startDate<=:endDate"),
+    @NamedQuery(name = "Customer.findNameSDate2", query = "SELECT  s FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND p.cName=:cName"),
+    @NamedQuery(name = "Customer.findNameEDate2", query = "SELECT  s FROM Customer p JOIN p.recordRecordNo s WHERE s.startDate<=:endDate AND p.cName=:cName"),
+    @NamedQuery(name = "Customer.findSEDate2", query = "SELECT  s FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND s.startDate<=:endDate"),
+    @NamedQuery(name = "Customer.findNameSEDate2", query = "SELECT  s FROM Customer p JOIN p.recordRecordNo s WHERE s.endDate>= :startDate AND s.startDate<=:endDate AND p.cName=:cName")})
 public class Customer implements Serializable {
 
 

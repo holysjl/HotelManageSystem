@@ -33,6 +33,14 @@ public class CustomerFacade extends AbstractFacade<Customer> {
     public CustomerFacade() {
         super(Customer.class);
     }
+    public List<Customer> findnull1(){
+      
+        return null;
+    }
+      public List<Record> findnull2(){
+      
+        return null;
+    }
     public List<Customer> findCustomer(){
         TypedQuery<Customer> query = em.createNamedQuery("Customer.findAll", Customer.class);
         return query.getResultList();

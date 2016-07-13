@@ -90,6 +90,8 @@ public class BookingController implements Serializable {
             items = ejbFacade.searchByName(name);
         if(isNull1 && !isNull2)
             items = ejbFacade.searchByTel(tel);
+        if (isNull1 && isNull2)
+            items = ejbFacade.findBooking();
         isSearch = true;
            
     }
@@ -149,6 +151,10 @@ public class BookingController implements Serializable {
 
     public String create() {
         try {
+            if (!current.getDateTo().after(current.getDateFrom())){
+                Exception e = new Exception();
+                throw e;
+            }
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("BookingCreated"));
             return prepareCreate();
