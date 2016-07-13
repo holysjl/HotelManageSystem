@@ -7,11 +7,12 @@
     <h:head>
         <title>酒店管理系统</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
-    </h:head>
+    </h:head  >
+    
         <h:form id="roomManage">
                     <p:growl id="rm" showDetail="true" />
-                    <p:panel style="width:100%;">
-                   
+                    <p:panel  header="房间管理" style="width:100%;">
+                        
                     <p:commandButton id="newroom" value="新建房间"  onclick="PF('dlg').show();" type="button" />
                     <p:dialog header="新建房间" widgetVar="dlg" resizable="false" dynamic="true">
                         <h:panelGrid columns="2" cellpadding="5">
@@ -27,13 +28,20 @@
                                      <p:inputText id="newroomno" value="#{roomController.selected.RNo}" required="false" />
                                     <h:outputLabel value="房间价格：" for="newroomprice" />
                                     <p:inputText id="newroomprice" value="#{roomController.selected.price}"  required="false" />
+                                    
+                                    
                             <f:facet name="footer">
                                
-                                <p:commandButton value="确认" update="roominfo"  actionListener="#{roomController.create}"  icon="ui-icon-check"  oncomplete="handleLoginRequest(xhr, status, args)"/>
+                                <p:commandButton value="确认" update="roominfo,testroomno"  actionListener="#{roomController.create}"  icon="ui-icon-check"  oncomplete="handleLoginRequest(xhr, status, args)"/>
                             </f:facet>  
                         </h:panelGrid>
                     </p:dialog>   
+                    <p:commandButton value="确认房间" action="#{recordController.testRoom}"/>
                     <p:commandButton value="返回" action="Home"/>
+                    <p:selectOneMenu id="testroomno"  value="#{recordController.selected.roomRNo}" required="false"   style="opacity: 0">
+                                        <f:selectItems value="#{roomController.testrooms}" />
+                    </p:selectOneMenu>
+                    
                     
                     <p:dataTable id="roominfo" value="#{roomController.rooms}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="600"  >
                         <p:column>

@@ -38,6 +38,7 @@ public class RecordController implements Serializable {
     private List<Record> checkrecords;
     private List<Integer> checkcash;
     private List<Integer> checkfee;
+    private Room testroom;
     @EJB
     private control.RecordFacade ejbFacade;
     private PaginationHelper pagination;
@@ -54,6 +55,36 @@ public class RecordController implements Serializable {
         }
         return current;
     }
+    public Room getTestroom(){
+        return testroom;
+    }
+    public void setTestroom(Room r){
+        testroom = r;
+    }
+    public String testRoom() throws ParseException{
+        SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+            Date beginDate = new Date();
+            Calendar date = Calendar.getInstance();
+	    date.setTime(beginDate);
+            date.set(Calendar.DATE, date.get(Calendar.DATE) - 100);
+	    Date endDate = dft.parse(dft.format(date.getTime()));
+            current.setCashPledge(0);
+            current.setPaidFee(0);
+            current.setStartDate(endDate);
+            current.setEndDate(endDate);
+            try {
+                getFacade().create(current);
+                findRecord();
+                findAvailableRoom();
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("添加房间成功"));
+                return "Home";
+            } catch (Exception e) {
+                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("添加房间失败"));
+                return null;
+            }
+            
+    }
+    
     public String endProgram(){
         current = new Record();
         selectedItemIndex = -1;
@@ -141,8 +172,17 @@ public class RecordController implements Serializable {
      
         try {
             //records= ejbFacade.findRecord(current);
-            Date date = new Date(); 
-            if (!current.getStartDate().before(date) && current.getEndDate().after(current.getStartDate())){
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+            Date beginDate = new Date();
+            Calendar date = Calendar.getInstance();
+	    date.setTime(beginDate);
+            date.set(Calendar.DATE, date.get(Calendar.DATE) - 1);
+	    Date endDate1 = dft.parse(dft.format(date.getTime()));
+            date.setTime(beginDate);
+            date.set(Calendar.DATE, date.get(Calendar.DATE) + 1);
+	    Date endDate2 = dft.parse(dft.format(date.getTime()));
+            
+            if (current.getStartDate().after(endDate1) && current.getStartDate().before(endDate2) && current.getEndDate().after(current.getStartDate())){
                 getFacade().create(current);
                 findRecord();
                 findAvailableRoom();

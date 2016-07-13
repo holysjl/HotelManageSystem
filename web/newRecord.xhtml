@@ -38,7 +38,7 @@
             <p:inputText id="fee" value="#{recordController.selected.paidFee}"   required="true" />
             <h:outputLabel value="押金：" for="cash" />
             <p:inputText id="cash" value="#{recordController.selected.cashPledge}"   required="true" />
-            <p:commandButton  value="提交登记信息"  ajax="false"  actionListener="#{recordController.create}" update="recordno,roomRNo"  >
+            <p:commandButton  value="提交登记信息"  ajax="false"  actionListener="#{recordController.create}" update="recordno,roomRNo,,recordno2"  >
             </p:commandButton>
             <p:commandButton  value="完成登记"  ajax="false"  action="#{recordController.endProgram}" />
         </h:panelGrid>

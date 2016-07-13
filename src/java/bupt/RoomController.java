@@ -26,6 +26,8 @@ public class RoomController implements Serializable {
     private Room current;
     private DataModel items = null;
     private List<Room> rooms;
+    private String testNo;
+    private List<Room> testrooms;
     @EJB
     private control.RoomFacade ejbFacade;
     private PaginationHelper pagination;
@@ -42,6 +44,10 @@ public class RoomController implements Serializable {
         }
         return current;
     }
+    public List<Room> getTestrooms(){
+        return ejbFacade.findRoomByNo(testNo);
+    }
+    
     private RoomFacade getFacade() {
         return ejbFacade;
     }
@@ -92,6 +98,7 @@ public class RoomController implements Serializable {
 
     public String create() {
         try {
+            testNo=current.getRNo();
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RoomCreated"));
             return prepareCreate();
