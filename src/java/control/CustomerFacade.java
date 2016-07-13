@@ -5,10 +5,8 @@
  */
 package control;
 
-import bupt.Booking;
 import bupt.Customer;
 import bupt.Record;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;

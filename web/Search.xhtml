@@ -39,38 +39,38 @@ and open the template in the editor.
 
                 <p:separator />
 
-                <p:dataTable id = "customer_query" var ="item1" value="#{customerController.items1}" 
+                <p:dataTable id = "customer_query" var ="item" value="#{customerController.items1}" 
                               scrollable="true"  scrollHeight="470"  style="border-style: none;">
                     <p:column headerText="Record" >
-                        <h:outputText value="#{item1.CName}" />
+                        <h:outputText value="#{item.CName}" />
                     </p:column>
 
                     <p:column headerText="性别" >
-                        <h:outputText value="#{item1.sex}" />
+                        <h:outputText value="#{item.sex}" />
                     </p:column>
 
                     <p:column headerText="ID" >
-                        <h:outputText value="#{item1.id}" />
+                        <h:outputText value="#{item.id}" />
                     </p:column>
 
                     <p:column headerText="电话">
-                        <h:outputText value="#{item1.tel}" />
+                        <h:outputText value="#{item.tel}" />
                     </p:column>
                     <p:column headerText="房间号">
-                        <h:outputText value="#{item1.recordRecordNo.roomRNo}" />
+                        <h:outputText value="#{item.recordRecordNo.roomRNo}" />
                     </p:column>
                     <p:column headerText="开始日期">
-                        <h:outputText value="#{item1.recordRecordNo.startDate}" >
+                        <h:outputText value="#{item.recordRecordNo.startDate}" >
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"/>
                         </h:outputText>
                     </p:column>
                     <p:column headerText="结束日期">
-                        <h:outputText value="#{item1.recordRecordNo.endDate}" >
+                        <h:outputText value="#{item.recordRecordNo.endDate}" >
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
                         </h:outputText>
                     </p:column>
                     <p:column headerText="订单号">
-                        <h:outputText value="#{item1.recordRecordNo.recordNo}" >
+                        <h:outputText value="#{item.recordRecordNo.recordNo}" >
                         </h:outputText>
                     </p:column>
                 </p:dataTable>

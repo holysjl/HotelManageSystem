@@ -10,18 +10,19 @@
             <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
         </h:head>
 
-        <h:body >
-             <h:form >    
+        <h:body > 
              
             <p:tabView orientation="top"  style="height:100%; page:full">
                 <p:tab title="客房预订" >
+                    <h:form id="book">
                     <p:growl id="msgs" showDetail="true" />
                     <p:panel style="width:100%;">
+                   
                     <p:commandButton id="bookroom" value="预订房间"  onclick="PF('dlg').show();" type="button" />
                     <p:dialog header="预定信息" widgetVar="dlg" resizable="false" dynamic="true">
                         <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputLabel value="房间类型：" />
-                                    <h:selectOneMenu id="type"  value="#{bookingController.selected.type}" required="true" label="Type">
+                                    <h:selectOneMenu id="type"  value="#{bookingController.selected.type}" required="false" label="Type">
                                         <f:selectItem itemLabel="选择一种房间类型" itemValue="" noSelectionOption="true" />
                                         <f:selectItem itemLabel="单人间" itemValue="S" />
                                         <f:selectItem itemLabel="双人间" itemValue="D" />
@@ -29,13 +30,13 @@
                                         <f:selectItem itemLabel="总统套房" itemValue="P" />
                                     </h:selectOneMenu>
                                      <h:outputLabel value="联系电话：" for="tel" />
-                                    <p:inputText id="tel" value="#{bookingController.selected.tel}" title="#{bundle.CreateBookingTitle_tel}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_tel}"/>
+                                    <p:inputText id="tel" value="#{bookingController.selected.tel}" title="#{bundle.CreateBookingTitle_tel}" required="false" requiredMessage="#{bundle.CreateBookingRequiredMessage_tel}"/>
                                     <h:outputLabel value="客户姓名：" for="CName" />
-                                    <p:inputText id="CName" value="#{bookingController.selected.CName}" title="#{bundle.CreateBookingTitle_CName}" required="true" requiredMessage="#{bundle.CreateBookingRequiredMessage_CName}"/>
+                                    <p:inputText id="CName" value="#{bookingController.selected.CName}" title="#{bundle.CreateBookingTitle_CName}" required="false" requiredMessage="#{bundle.CreateBookingRequiredMessage_CName}"/>
                                     <p:outputLabel for="dateFrom" value="起始日期:" />
-                                   <p:calendar id="dateFrom" value="#{bookingController.selected.dateFrom}" pattern="MM-dd-yyyy" mask="true" />
+                                   <p:calendar id="dateFrom" value="#{bookingController.selected.dateFrom}" pattern="MM-dd-yyyy" mask="false" />
                                      <p:outputLabel for="dateTo" value="结束日期:" />
-                                    <p:calendar id="dateTo" value="#{bookingController.selected.dateTo}" pattern="MM-dd-yyyy" mask="true" />
+                                    <p:calendar id="dateTo" value="#{bookingController.selected.dateTo}" pattern="MM-dd-yyyy" mask="false" />
                                     
                             <f:facet name="footer">
                                
@@ -43,6 +44,16 @@
                             </f:facet>  
                         </h:panelGrid>
                     </p:dialog>
+                    
+                    <h:panelGrid columns="10" cellpadding="2" >
+                    <p:outputLabel value="姓名:" for="bookname"/>
+                    <p:inputText id="bookname" value="#{bookingController.name}"/>
+                    <p:outputLabel value="电话:" for="booktel"/>
+                    <p:inputText id="booktel" value="#{bookingController.tel}"/>
+                    <p:commandButton value="搜索" actionListener="#{bookingController.showBookingResults}" update="@form" />
+                    <p:outputLabel value=" "/> <p:outputLabel value=" "/> <p:outputLabel value=" "/> <p:outputLabel value=" "/> <p:outputLabel value=" "/> 
+                    </h:panelGrid>
+                   
                     
                     
                     
@@ -84,6 +95,7 @@
                     </p:dataTable>
       
                     </p:panel>
+                    </h:form>
                 </p:tab>
                 
                 
@@ -97,6 +109,7 @@
                       
                             
                         </h:panelGrid>
+                        <h:form>
                     
                     <p:dataTable  value="#{recordController.items}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="500" >
                         <p:column>
@@ -134,17 +147,156 @@
                             <h:outputText value="#{item.cashPledge}"/>
                         </p:column>
                     </p:dataTable>
+                        </h:form>
       
                     </p:panel>
                 </p:tab>
                 
+                <p:tab title="退房办理">
+                    <p:growl id="ck" showDetail="true" />
+                    <h:form>
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <p:panel header ="退房">
+                            <h:outputLabel value="房间号" for="roomNo" />
+                            <p:inputText id="roomRNo" value="#{recordController.roomNo}"/>
+
+
+
+                    <p:commandButton value="查询房间记录"  actionListener="#{recordController.searchRecord}"  update="@form" >
+                        </p:commandButton>
+                        <h:panelGrid id="roomrecord" columns="2" style="margin-bottom:10px" cellpadding="5" > 
+                         <h:outputLabel value="房费" for="fee"/>
+                         <p:selectOneMenu id="fee"  value="#{billController.fee}" >
+                             <f:selectItems value="#{recordController.checkfee}" />
+                        </p:selectOneMenu>
+
+                         <h:outputLabel value="押金" for="cashPledge"/>
+                         <p:selectOneMenu id="cashPledge"  value="#{billController.cashPledge}" >
+                             <f:selectItems value="#{recordController.checkcash}" />
+                        </p:selectOneMenu>
+
+                         <h:outputLabel value="订单号" for="recordNo" rendered="false"/>
+                         <p:selectOneMenu id="recordNo"  value="#{billController.selected.record}" rendered="false" >
+                             <f:selectItems value="#{recordController.checkrecords}" />
+                        </p:selectOneMenu>
+                     </h:panelGrid> 
+
+
+                      <h:panelGrid id="thinglist" columns="4" style="margin-bottom:10px" cellpadding="5" >
+                        <p:outputLabel value="避孕用品: " for="t1"/>
+                        <p:selectBooleanCheckbox  id="t1" value="#{billController.value1}" required="false" >
+                            <p:ajax listener="#{billController.add1}"/>
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel value="毛巾: " for="t2"/>
+                        <p:selectBooleanCheckbox  id="t2" value="#{billController.value2}" required="false">
+                            <p:ajax listener="#{billController.add2}"/>
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel value="扑克牌: "  for="t3"/>
+                        <p:selectBooleanCheckbox id="t3" value="#{billController.value3}" required="false">    
+                            <p:ajax listener="#{billController.add3}"/>  
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel value="矿泉水 " for="t4" />
+                        <p:selectBooleanCheckbox id="t4" value="#{billController.value4}" required="false">
+                            <p:ajax listener="#{billController.add4}"/>    
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel value="冰红茶 " for="t5"/>
+                        <p:selectBooleanCheckbox id="t5" value="#{billController.value5}" required="false">   
+                            <p:ajax listener="#{billController.add5}"/>    
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel value="方便面: " for="t6"/>
+                        <p:selectBooleanCheckbox  id="t6" value="#{billController.value6}" required="false" >
+                            <p:ajax listener="#{billController.add6}"/>
+                        </p:selectBooleanCheckbox>
+                    </h:panelGrid>
+
+                    <p:commandButton value="Submit"  actionListener="#{billController.sum}"  update="display" oncomplete="PF('dlg').show()" />
+                    <p:dialog header="Values" modal="true" resizable="false" showEffect="fade" widgetVar="dlg">
+                        <h:panelGrid columns="1" id="display">
+                            <h:outputText value="总共消费: #{billController.selected.totalFee}" />
+                            <h:outputText value="额外费用: #{billController.selected.extraFee}" />
+                            <p:button  value="确认" outcome="Home"/>
+                        </h:panelGrid>
+                    </p:dialog>
+
+
+                </p:panel> 
+                </h:panelGrid>
+                </h:form>
+                    
+                </p:tab>
+                
                 
                 <p:tab title="业务查询">
- 
+                     <h:form id="query">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="name" value="姓名: " />
+                    <p:inputText id="name" value="#{customerController.cname}" />
+
+                    <p:outputLabel for="startDate" value="开始日期: " />
+                    <p:calendar id="startDate" value="#{customerController.sdate}" pattern="yyyy-MM-dd" maxdate="7/10/16" />
+                    
+
+                    <p:outputLabel for="endDate" value="结束日期: " />
+                    <p:calendar id="endDate" value="#{customerController.edate}" pattern="yyyy-MM-dd" maxdate="7/10/16"/>
+                </h:panelGrid>
+                <p:separator />
+               
+                <p:commandButton value="提交" update="@form" actionListener="#{customerController.showQueryResults}">
+                </p:commandButton>
+                <p:separator />
+                
+                <p:panelGrid columns="2">
+                <p:dataTable id = "customer_query" var ="item1" value="#{customerController.items1}" 
+                             style="border-style: none;" >
+                    <p:column headerText="姓名" >
+                        <h:outputText value="#{item1.CName}" />
+                    </p:column>
+
+                    <p:column headerText="性别" >
+                        <h:outputText value="#{item1.sex}" />
+                    </p:column>
+
+                    <p:column headerText="身份证号" >
+                        <h:outputText value="#{item1.id}" />
+                    </p:column>
+
+                    <p:column headerText="电话">
+                        <h:outputText value="#{item1.tel}" />
+                    </p:column>
+                    
+                </p:dataTable>
+                
+                <p:dataTable id = "record_query" var ="item2" value="#{customerController.items2}" 
+                             scrollHeight="470"  style="border-style: none;">
+                    
+                    <p:column headerText="房间号">
+                        <h:outputText value="#{item2.roomRNo}" />
+                    </p:column>
+                    <p:column headerText="开始日期">
+                        <h:outputText value="#{item2.startDate}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="结束日期">
+                        <h:outputText value="#{item2.endDate}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="订单号">
+                        <h:outputText value="#{item2.recordNo}" />
+                    </p:column>
+                </p:dataTable>
+                    </p:panelGrid>
+                </h:form>
               
                 </p:tab>
             </p:tabView>
-         </h:form>
+         
          </h:body>
 
     </f:view>

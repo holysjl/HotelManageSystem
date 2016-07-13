@@ -58,8 +58,8 @@
                             </p:selectOneMenu>
                             <h:outputLabel value="联系方式：" for="tel" />
                             <p:inputText id="tel" value="#{customerController.selected.tel}"   required="false" />
-                            <h:outputLabel value="订单号：" for="recordno" rendered="false"/>
-                            <p:selectOneMenu id="recordno"  value="#{customerController.selected.recordRecordNo}" required="false" rendered="false" >
+                            <h:outputLabel value="订单号：" for="recordno" />
+                            <p:selectOneMenu id="recordno"  value="#{customerController.selected.recordRecordNo}" required="false"  >
                                 <f:selectItems value="#{recordController.records}" />
                             </p:selectOneMenu>
                             <f:facet name="footer">
@@ -97,7 +97,7 @@
                             <f:facet name="header">
                                 <h:outputText value="联系方式"/>
                             </f:facet>
-                            <h:outputText value="#{item.sex}"/>
+                            <h:outputText value="#{item.tel}"/>
                         </p:column>
                     </p:dataTable>
             

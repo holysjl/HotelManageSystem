@@ -6,6 +6,7 @@ import control.BookingFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -15,6 +16,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -26,15 +28,81 @@ public class BookingController implements Serializable {
     private Booking current;
     //private DataModel items = null;
     private List<Booking> items;
+    
+    private String name;
+    private String tel;
+    private boolean isNull1;
+    private boolean isNull2;
+    private boolean isSearch=false;
+    
     @EJB
     private control.BookingFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-     private List<Booking> bookingList = new ArrayList<>();
+    private List<Booking> bookingList = new ArrayList<>();
 
     public BookingController() {
     }
+    
+    
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+    
+     public boolean isIsNull1() {
+         isNull1 = name.isEmpty();
+        return isNull1;
+    }
+
+    public void setIsNull1(boolean isNull1) {
+        this.isNull1 = isNull1;
+    }
+
+    public boolean isIsNull2() {
+        isNull2 = tel.isEmpty();
+        return isNull2;
+    }
+
+    public void setIsNull2(boolean isNull2) {
+        this.isNull2 = isNull2;
+    }
+    
+    public void showBookingResults(ActionEvent ae){
+        
+        isNull1 = name.isEmpty();
+        isNull2 = tel.isEmpty();
+        
+        if(!isNull1 && !isNull2)
+            items = ejbFacade.searchByNameTel(name, tel);
+        if(!isNull1 && isNull2)
+            items = ejbFacade.searchByName(name);
+        if(isNull1 && !isNull2)
+            items = ejbFacade.searchByTel(tel);
+        isSearch = true;
+           
+    }
+    
+    public List<Booking> getItems() {
+        if (!isSearch){
+            items = ejbFacade.findBooking();
+        }
+        //isSearch = false;
+        return items;
+    }
+
+    
     
     public Booking getSelected() {
         if (current == null) {
@@ -138,11 +206,6 @@ public class BookingController implements Serializable {
         if (selectedItemIndex >= 0) {
             current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
-    }
-
-    public List<Booking> getItems() {
-        items = ejbFacade.findBooking();
-        return items;
     }
 
     private void recreateModel() {
