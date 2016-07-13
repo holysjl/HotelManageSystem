@@ -5,9 +5,14 @@ import bupt.util.PaginationHelper;
 import control.RecordFacade;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -85,6 +90,9 @@ public class RecordController implements Serializable {
     public List<Room> getRooms(){
         return rooms;
     }
+    public void setRooms(List<Room> rooms){
+        this.rooms = rooms;
+    }
     
   
     
@@ -133,10 +141,17 @@ public class RecordController implements Serializable {
      
         try {
             //records= ejbFacade.findRecord(current);
-            getFacade().create(current);
-            findRecord();
-            findAvailableRoom();
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordCreated"));
+            Date date = new Date(); 
+            if (!current.getStartDate().before(date) && current.getEndDate().after(current.getStartDate())){
+                getFacade().create(current);
+                findRecord();
+                findAvailableRoom();
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordCreated"));
+            }
+            else {
+                Exception e = new Exception();
+                throw e;
+            }
             //return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -148,12 +163,22 @@ public class RecordController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+            Date beginDate = new Date();
+            Calendar date = Calendar.getInstance();
+	    date.setTime(beginDate);
+            date.set(Calendar.DATE, date.get(Calendar.DATE) - 1);
+	    Date endDate = dft.parse(dft.format(date.getTime()));
+            Record checkrecord = checkrecords.get(0);
+            checkrecord.setEndDate(endDate);
+            
+            getFacade().edit(checkrecord);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordUpdated"));
-            return "View";
+            return "Home";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+
+            return "Home";
         }
     }
 

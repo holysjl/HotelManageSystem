@@ -30,14 +30,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "booking")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
-    @NamedQuery(name = "Booking.findByBookingNo", query = "SELECT b FROM Booking b WHERE b.bookingNo = :bookingNo"),
-    @NamedQuery(name = "Booking.findByType", query = "SELECT b FROM Booking b WHERE b.type = :type"),
-    @NamedQuery(name = "Booking.findByTel", query = "SELECT b FROM Booking b WHERE b.tel = :tel AND b.dateFrom>=:today"),
-    @NamedQuery(name = "Booking.findByCName", query = "SELECT b FROM Booking b WHERE b.cName = :cName AND b.dateFrom>=:today"),
-    @NamedQuery(name = "Booking.findByDateFrom", query = "SELECT b FROM Booking b WHERE b.dateFrom = :dateFrom"),
-    @NamedQuery(name = "Booking.findByDateTo", query = "SELECT b FROM Booking b WHERE b.dateTo = :dateTo"),
-    @NamedQuery(name = "Booking.findByNameTel", query = "SELECT b FROM Booking b WHERE b.cName =:cName AND b.tel =:tel AND b.dateFrom>=:today")})
+    @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b WHERE b.dateFrom>= :date ORDER BY b.dateFrom"),
+    @NamedQuery(name = "Booking.findByBookingNo", query = "SELECT b FROM Booking b WHERE b.bookingNo = :bookingNo ORDER BY b.dateFrom"),
+    @NamedQuery(name = "Booking.findByType", query = "SELECT b FROM Booking b WHERE b.type = :type ORDER BY b.dateFrom"),
+    @NamedQuery(name = "Booking.findByTel", query = "SELECT b FROM Booking b WHERE b.tel = :tel AND b.dateFrom>=:today ORDER BY b.dateFrom"),
+    @NamedQuery(name = "Booking.findByCName", query = "SELECT b FROM Booking b WHERE b.cName = :cName AND b.dateFrom>=:today ORDER BY b.dateFrom"),
+    @NamedQuery(name = "Booking.findByDateFrom", query = "SELECT b FROM Booking b WHERE b.dateFrom = :dateFrom ORDER BY b.dateFrom"),
+    @NamedQuery(name = "Booking.findByDateTo", query = "SELECT b FROM Booking b WHERE b.dateTo = :dateTo ORDER BY b.dateFrom"),
+    @NamedQuery(name = "Booking.findByNameTel", query = "SELECT b FROM Booking b WHERE b.cName =:cName AND b.tel =:tel AND b.dateFrom>=:today ORDER BY b.dateFrom")})
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 1L;

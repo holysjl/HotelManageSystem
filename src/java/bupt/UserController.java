@@ -39,11 +39,13 @@ public class UserController implements Serializable {
     }
     public String login() {
         userList = ejbFacade.findAll();
-        for (int i=0;i<userList.size();i++){
-            if (current.getAccount().equals("holysjl") && current.getPwd().equals("123456"))
+        String a="holysjl";
+        String p="123456";
+        //for (int i=0;i<userList.size();i++){
+           if (current.getAccount().equals(a) && current.getPwd().equals(p))
                 return "Home";
-        }
-        return "index";
+        //}
+            else return "index";
     }
     
 
