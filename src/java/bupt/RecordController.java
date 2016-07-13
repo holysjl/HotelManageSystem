@@ -61,7 +61,7 @@ public class RecordController implements Serializable {
     public void setTestroom(Room r){
         testroom = r;
     }
-    public String testRoom() throws ParseException{
+    public void testRoom() throws ParseException{
         SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
             Date beginDate = new Date();
             Calendar date = Calendar.getInstance();
@@ -76,11 +76,11 @@ public class RecordController implements Serializable {
                 getFacade().create(current);
                 findRecord();
                 findAvailableRoom();
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("添加房间成功"));
-                return "Home";
+                //JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("添加房间成功"));
+                //return "roomManage";
             } catch (Exception e) {
-                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("添加房间失败"));
-                return null;
+                //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("添加房间失败"));
+                //return null;
             }
             
     }

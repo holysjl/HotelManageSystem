@@ -36,7 +36,11 @@
                             </f:facet>  
                         </h:panelGrid>
                     </p:dialog>   
-                    <p:commandButton value="确认房间" action="#{recordController.testRoom}"/>
+                    <p:commandButton value="确认房间" action="#{recordController.testRoom}" update="sure" oncomplete="PF('ddg').show()"/>
+                    <p:dialog header="确认创建房间" modal="true" resizable="false" widgetVar="ddg">
+                            <h:outputText id="sure" value="已成功" />
+                    </p:dialog>
+                    
                     <p:commandButton value="返回" action="Home"/>
                     <p:selectOneMenu id="testroomno"  value="#{recordController.selected.roomRNo}" required="false"   style="opacity: 0">
                                         <f:selectItems value="#{roomController.testrooms}" />
