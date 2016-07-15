@@ -172,7 +172,7 @@
                 
                 <p:panelGrid columns="2">
                 <p:dataTable id = "customer_query" var ="item1" value="#{customerController.items1}" 
-                             style="border-style: none; height:450px" >
+                             style="border-style: none; height:500px" >
                     <p:column headerText="姓名" >
                         <h:outputText value="#{item1.CName}" />
                     </p:column>
@@ -192,7 +192,7 @@
                 </p:dataTable>
                 
                 <p:dataTable id = "record_query" var ="item2" value="#{customerController.items2}" 
-                              style="border-style: none;height:450px">
+                              style="border-style: none;height:500px">
                     
                     <p:column headerText="房间号">
                         <h:outputText value="#{item2.roomRNo}" />
@@ -214,7 +214,28 @@
                     </p:panelGrid>
                 </h:form>
               
-                </p:tab>          
+                </p:tab> 
+                
+                
+                
+                <p:tab title="会员申请">
+                    <h:form>
+                        <p:panel style="height: 700px">
+                        <p:commandButton value="提交"  action="#{userController.create}"/> 
+                        <p:separator/>
+                        <p:panelGrid  columns="2">
+                        <p:outputLabel  value="账户（证件号码）:" for="account"/>
+                        <p:inputText  id="account" value="#{userController.selected.account}" />
+                        
+                        <p:outputLabel value="密码：" for="pwd"/>
+                        <p:inputText id="pwd" value="#{userController.selected.pwd}"/>
+                        </p:panelGrid>
+                        
+                    
+                        </p:panel>
+                    </h:form>
+                </p:tab>
+                
             </p:tabView>
          
          </h:body>

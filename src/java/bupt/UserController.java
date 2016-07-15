@@ -90,17 +90,14 @@ public class UserController implements Serializable {
         return "View";
     }
 
-    public String prepareCreate() {
-        current = new User();
-        selectedItemIndex = -1;
-        return "Create";
-    }
 
     public String create() {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserCreated"));
-            return prepareCreate();
+            current = new User();
+            selectedItemIndex = -1;
+            return "Home";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
