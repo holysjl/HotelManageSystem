@@ -50,4 +50,5 @@ public class RoomFacade extends AbstractFacade<Room> {
         query.setParameter("type",r.getType());
         return query.getResultList();
     }
+    
 }

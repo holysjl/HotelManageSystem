@@ -7,10 +7,10 @@
 <h:head>
     </h:head>
     <body>
-        <h:form>
+        <h:form id="form">
         <p:growl id="msgs" showDetail="true" />
         <p:panel header="住房信息">
-        <h:panelGrid columns="9" cellpadding="5" style="margin-bottom:10px" >
+        <h:panelGrid columns="10" cellpadding="5" style="margin-bottom:10px" >
         <p:outputLabel value="房间类型" /> 
         <p:selectOneMenu id="type"  value="#{recordController.type}"   >
             <p:ajax listener="#{recordController.findAvailableRoom}" update="roomRNo"   />
@@ -24,6 +24,7 @@
         <p:selectOneMenu id="roomRNo"  value="#{recordController.selected.roomRNo}" >
             <f:selectItems value="#{recordController.rooms}" />
         </p:selectOneMenu>
+         <p:outputLabel /> 
         <p:outputLabel /> 
         <p:outputLabel /> 
         <p:outputLabel /> 
@@ -37,9 +38,9 @@
             <p:inputText id="fee" value="#{recordController.selected.paidFee}"   required="true" />
             <h:outputLabel value="押金：" for="cash" />
             <p:inputText id="cash" value="#{recordController.selected.cashPledge}"   required="true" />
-            <p:commandButton  value="提交登记信息"  ajax="false"  actionListener="#{recordController.create}" >
-                <p:ajax listener="#{recordController.findRecord}" update="recordno"   />
+            <p:commandButton  value="提交登记信息"  ajax="false"  actionListener="#{recordController.create}" update="recordno,roomRNo,,recordno2"  >
             </p:commandButton>
+            <p:commandButton  value="完成登记"  ajax="false"  action="#{recordController.endProgram}" />
         </h:panelGrid>
         </p:panel>
         <p:panel header="顾客信息">
@@ -57,19 +58,22 @@
                             </p:selectOneMenu>
                             <h:outputLabel value="联系方式：" for="tel" />
                             <p:inputText id="tel" value="#{customerController.selected.tel}"   required="false" />
-                            <h:outputLabel value="订单：" for="recordno" />
-                            <p:selectOneMenu id="recordno"  value="#{customerController.selected.recordRecordNo}" required="false">
+                            <h:outputLabel value="订单号：" for="recordno" />
+                            <p:selectOneMenu id="recordno"  value="#{customerController.selected.recordRecordNo}" required="false"  >
                                 <f:selectItems value="#{recordController.records}" />
                             </p:selectOneMenu>
                             <f:facet name="footer">
-                                <p:commandButton value="提交"  actionListener="#{customerController.create}"   icon="ui-icon-check"  >
-                                    <p:ajax listener="#{customerController.findByRecordNo}" update="cdata"   />
+                                <p:commandButton value="提交"  actionListener="#{customerController.create}"   update="cdata" icon="ui-icon-check"   oncomplete="handleLoginRequest(xhr, status, args)">
+                                    <p:ajax update=":form:mmm" />
                                 </p:commandButton>
                             </f:facet>
                         </h:panelGrid>
                     </p:dialog>
-            
-            
+            <h:outputLabel value="订单号：" for="recordno2"   style="opacity: 0" />
+            <p:selectOneMenu id="recordno2"  value="#{customerController.tempRecordNo}" required="false" style="opacity: 0">
+                    <f:selectItems value="#{recordController.records}" />
+            </p:selectOneMenu>
+             <p:growl id="mmm" showDetail="true"/>
             <p:dataTable   id="cdata" value="#{customerController.items}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="500" >
                         <p:column>
                             <f:facet name="header">
@@ -93,13 +97,20 @@
                             <f:facet name="header">
                                 <h:outputText value="联系方式"/>
                             </f:facet>
-                            <h:outputText value="#{item.sex}"/>
+                            <h:outputText value="#{item.tel}"/>
                         </p:column>
                     </p:dataTable>
             
         </p:panel>
         
         </h:form>
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+          
+                   PF('dlg').hide();
+  
+           }
+       </script>
     </body>
 </html>
 

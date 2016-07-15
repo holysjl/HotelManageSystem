@@ -5,6 +5,9 @@ import bupt.util.PaginationHelper;
 import control.CustomerFacade;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -14,6 +17,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -24,6 +28,15 @@ public class CustomerController implements Serializable {
 
     private Customer current;
     private List<Customer> items;
+    private Record tempRecordNo;
+    private String cname;
+    private Date sdate;
+    private Date edate;
+
+    
+    
+    private List<Customer> items1 = null;
+    private List<Record> items2 = null;
     @EJB
     private control.CustomerFacade ejbFacade;
     private PaginationHelper pagination;
@@ -39,10 +52,134 @@ public class CustomerController implements Serializable {
         }
         return current;
     }
-    public void findByRecordNo(){
-        items = ejbFacade.findByRecordNo(current);
+
+    public Record getTempRecordNo() {
+        return tempRecordNo;
     }
+
+    public void setTempRecordNo(Record s) {
+        this.tempRecordNo = s;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cName) {
+        this.cname = cName;
+    }
+
+    public Date getSdate() {
+        return sdate;
+    }
+
+    public void setSdate(Date sdate) {
+        this.sdate = sdate;
+    }
+
+    public Date getEdate() {
+        return edate;
+    }
+
+    public void setEdate(Date eDate) {
+        this.edate = eDate;
+    }
+
+    public List<Customer> getItems1() {
+        
+        return items1;
+    }
+
+    public List<Record> getItems2() {
+        
+        return items2;
+    }
+
     
+    public void showQueryResults(ActionEvent ae) {
+           
+        boolean isNull1 = cname.isEmpty();
+        boolean isNull2=(sdate==null);
+        boolean isNull3 =(edate==null);
+        
+        if (!isNull1 && isNull2 && isNull3) {
+             items1 = ejbFacade.searchByName1(cname);     
+            items2 = ejbFacade.searchByName2(cname);
+           
+        }
+        if (isNull1 && !isNull2 && isNull3) {
+            items1 = ejbFacade.searchBySDate1(sdate);
+            items2 = ejbFacade.searchBySDate2(sdate);
+        }
+        if (isNull1 && isNull2 && !isNull3) {
+            items1 = ejbFacade.searchByEDate1(edate);
+            items2 = ejbFacade.searchByEDate2(edate);
+        }
+        if (!isNull1 && !isNull2 && isNull3) {
+            items1 = ejbFacade.searchByNameSDate1(cname, sdate);
+            items2 = ejbFacade.searchByNameSDate2(cname, sdate);
+        }
+        if (!isNull1 && isNull2 && !isNull3) {
+            items1 = ejbFacade.searchByNameEDate1(cname, edate);
+            items2 = ejbFacade.searchByNameEDate2(cname, edate);
+        }
+        if (isNull1 && !isNull2 && !isNull3) {
+            
+            try {
+        if (sdate.before(edate)){
+               items1 = ejbFacade.searchBySEDate1(sdate, edate);
+            items2 = ejbFacade.searchBySEDate2(sdate, edate);
+               
+               
+            
+            }
+            else {
+                Exception e = new Exception();
+                throw e;
+            }
+            //return prepareCreate();
+        } catch (Exception e) {
+            items1=ejbFacade.findnull1();
+            items2=ejbFacade.findnull2();
+        }
+            
+            
+            
+            
+        }
+        if (!isNull1 && !isNull2 && !isNull3) {
+                try {
+        if (sdate.before(edate)){
+              items1 = ejbFacade.searchByNameSEDate1(cname, sdate, edate);
+            items2 = ejbFacade.searchByNameSEDate2(cname, sdate, edate);
+               
+               
+            
+            }
+            else {
+                Exception e = new Exception();
+                throw e;
+            }
+            //return prepareCreate();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            items1=ejbFacade.findnull1();
+            items2=ejbFacade.findnull2();
+        }
+           
+        }
+        if(isNull1 && isNull2 && isNull3){
+            items1=ejbFacade.findnull1();
+            items2=ejbFacade.findnull2();
+        }
+        
+        
+        
+        
+      
+
+    }
+
     private CustomerFacade getFacade() {
         return ejbFacade;
     }
@@ -70,7 +207,6 @@ public class CustomerController implements Serializable {
         return "List";
     }
 
-
     public String prepareCreate() {
         current = new Customer();
         selectedItemIndex = -1;
@@ -79,15 +215,19 @@ public class CustomerController implements Serializable {
 
     public String create() {
         try {
+            if (!(ejbFacade.findByID(current)).isEmpty()) {
+                throw new Exception();
+            }
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CustomerCreated"));
+            items = ejbFacade.findByRecordNo(tempRecordNo);
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
-    }
 
+    }
 
     public String update() {
         try {
@@ -99,7 +239,6 @@ public class CustomerController implements Serializable {
             return null;
         }
     }
-
 
     public String destroyAndView() {
         performDestroy();

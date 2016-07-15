@@ -5,9 +5,14 @@ import bupt.util.PaginationHelper;
 import control.RecordFacade;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -23,11 +28,17 @@ import javax.faces.model.SelectItem;
 @SessionScoped
 public class RecordController implements Serializable {
 
+
     private Record current;
     private List<Record> items = null;
     private List<Record> records;
     private String type;
     private List<Room> rooms;
+    private String roomNo;
+    private List<Record> checkrecords;
+    private List<Integer> checkcash;
+    private List<Integer> checkfee;
+    private Room testroom;
     @EJB
     private control.RecordFacade ejbFacade;
     private PaginationHelper pagination;
@@ -44,14 +55,74 @@ public class RecordController implements Serializable {
         }
         return current;
     }
+    public Room getTestroom(){
+        return testroom;
+    }
+    public void setTestroom(Room r){
+        testroom = r;
+    }
+    public void testRoom() throws ParseException{
+        SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+            Date beginDate = new Date();
+            Calendar date = Calendar.getInstance();
+	    date.setTime(beginDate);
+            date.set(Calendar.DATE, date.get(Calendar.DATE) - 100);
+	    Date endDate = dft.parse(dft.format(date.getTime()));
+            current.setCashPledge(0);
+            current.setPaidFee(0);
+            current.setStartDate(endDate);
+            current.setEndDate(endDate);
+            try {
+                getFacade().create(current);
+                findRecord();
+                findAvailableRoom();
+                //JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("添加房间成功"));
+                //return "roomManage";
+            } catch (Exception e) {
+                //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("添加房间失败"));
+                //return null;
+            }
+            
+    }
+    
+    public String endProgram(){
+        current = new Record();
+        selectedItemIndex = -1;
+        return "Home";
+    }
     public String getType(){
         return type;
     }
     public void setType(String type){
         this.type=type;
     }
+    public String getRoomNo(){
+        return roomNo;
+    }
+    public void setRoomNo(String roomNo){
+        this.roomNo = roomNo;
+    }
+    public List<Record> getCheckrecords(){
+        return checkrecords;
+    }
+    public List<Integer> getCheckcash(){
+        return checkcash;
+    }
+    public List<Integer> getCheckfee(){
+        return checkfee;
+    }
+    
+    public void searchRecord(){
+        checkrecords = ejbFacade.findByRoomNo(roomNo);
+        checkfee = ejbFacade.findFee(roomNo);
+        checkcash = ejbFacade.findCash(roomNo);
+    }
+    
     public List<Room> getRooms(){
         return rooms;
+    }
+    public void setRooms(List<Room> rooms){
+        this.rooms = rooms;
     }
     
   
@@ -65,7 +136,7 @@ public class RecordController implements Serializable {
         records= ejbFacade.findRecord(current);
     }
     public List<Record> getRecords(){
-        records= ejbFacade.findRecord(current);
+        //records= ejbFacade.findRecord(current);
         return records;
     }
     
@@ -96,32 +167,58 @@ public class RecordController implements Serializable {
         return "List";
     }
 
-    public String prepareCreate() {
-        current = new Record();
-        selectedItemIndex = -1;
-        return "Create";
-    }
 
     public void create() {
+     
         try {
-            records= ejbFacade.findRecord(current);
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordCreated"));
+            //records= ejbFacade.findRecord(current);
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+            Date beginDate = new Date();
+            Calendar date = Calendar.getInstance();
+	    date.setTime(beginDate);
+            date.set(Calendar.DATE, date.get(Calendar.DATE) - 1);
+	    Date endDate1 = dft.parse(dft.format(date.getTime()));
+            date.setTime(beginDate);
+            date.set(Calendar.DATE, date.get(Calendar.DATE) + 1);
+	    Date endDate2 = dft.parse(dft.format(date.getTime()));
+            
+            if (current.getStartDate().after(endDate1) && current.getStartDate().before(endDate2) && current.getEndDate().after(current.getStartDate())){
+                getFacade().create(current);
+                findRecord();
+                findAvailableRoom();
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordCreated"));
+            }
+            else {
+                Exception e = new Exception();
+                throw e;
+            }
             //return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             //return null;
         }
+        
+       
     }
 
     public String update() {
         try {
-            getFacade().edit(current);
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+            Date beginDate = new Date();
+            Calendar date = Calendar.getInstance();
+	    date.setTime(beginDate);
+            date.set(Calendar.DATE, date.get(Calendar.DATE) - 1);
+	    Date endDate = dft.parse(dft.format(date.getTime()));
+            Record checkrecord = checkrecords.get(0);
+            checkrecord.setEndDate(endDate);
+            
+            getFacade().edit(checkrecord);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RecordUpdated"));
-            return "View";
+            return "Home";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+
+            return "Home";
         }
     }
 
@@ -163,9 +260,7 @@ public class RecordController implements Serializable {
     }
 
     public List<Record> getItems() {
-        if (items == null) {
-            items = ejbFacade.findAll();
-        }
+        items = ejbFacade.findAllSelected();
         return items;
     }
 

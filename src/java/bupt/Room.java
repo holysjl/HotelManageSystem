@@ -114,5 +114,6 @@ public class Room implements Serializable {
     public String toString() {
         return "bupt.Room[ rNo=" + rNo + " ]";
     }
+
     
 }

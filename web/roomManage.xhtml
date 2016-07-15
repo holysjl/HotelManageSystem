@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>酒店管理系统</title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+    </h:head  >
+    
+        <h:form id="roomManage">
+                    <p:growl id="rm" showDetail="true" />
+                    <p:panel  header="房间管理" style="width:100%;">
+                        
+                    <p:commandButton id="newroom" value="新建房间"  onclick="PF('dlg').show();" type="button" />
+                    <p:dialog header="新建房间" widgetVar="dlg" resizable="false" dynamic="true">
+                        <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel value="房间类型：" />
+                                <h:selectOneMenu id="type"  value="#{roomController.selected.type}" required="false" label="Type">
+                                        <f:selectItem itemLabel="选择一种房间类型" itemValue="" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="单人间" itemValue="S" />
+                                        <f:selectItem itemLabel="双人间" itemValue="D" />
+                                        <f:selectItem itemLabel="三人间" itemValue="T" />
+                                        <f:selectItem itemLabel="总统套房" itemValue="P" />
+                                    </h:selectOneMenu>
+                                     <h:outputLabel value="房间号：" for="newroomno" />
+                                     <p:inputText id="newroomno" value="#{roomController.selected.RNo}" required="false" />
+                                    <h:outputLabel value="房间价格：" for="newroomprice" />
+                                    <p:inputText id="newroomprice" value="#{roomController.selected.price}"  required="false" />
+                                    
+                                    
+                            <f:facet name="footer">
+                               
+                                <p:commandButton value="确认" update="roominfo,testroomno"  actionListener="#{roomController.create}"  icon="ui-icon-check"  oncomplete="handleLoginRequest(xhr, status, args)"/>
+                            </f:facet>  
+                        </h:panelGrid>
+                    </p:dialog>   
+                    <p:commandButton value="确认房间" action="#{recordController.testRoom}" update="sure" oncomplete="PF('ddg').show()"/>
+                    <p:dialog header="确认创建房间" modal="true" resizable="false" widgetVar="ddg">
+                            <h:outputText id="sure" value="已成功" />
+                    </p:dialog>
+                    
+                    <p:commandButton value="返回" action="Home"/>
+                    <p:selectOneMenu id="testroomno"  value="#{recordController.selected.roomRNo}" required="false"   style="opacity: 0">
+                                        <f:selectItems value="#{roomController.testrooms}" />
+                    </p:selectOneMenu>
+                    
+                    
+                    <p:dataTable id="roominfo" value="#{roomController.rooms}"   var="item" style="border:solid 1px"  scrollable="true"  scrollHeight="600"  >
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="房间类型"/>
+                            </f:facet>
+                            <h:outputText value="#{item.type}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="房间号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.RNo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="房间价格"/>
+                            </f:facet>
+                            <h:outputText value="#{item.price}"/>
+                        </p:column>
+                        
+                    </p:dataTable>
+      
+                    </p:panel>
+                    </h:form>
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+          
+                   PF('dlg').hide();
+  
+           }
+       </script>
+
+
+
+
+
+</html>
+

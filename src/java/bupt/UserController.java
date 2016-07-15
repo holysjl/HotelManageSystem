@@ -39,11 +39,13 @@ public class UserController implements Serializable {
     }
     public String login() {
         userList = ejbFacade.findAll();
-        for (int i=0;i<userList.size();i++){
-            if (current.getAccount().equals(userList.get(i).getAccount()) && current.getPwd().equals(userList.get(i).getPwd()))
+        String a="holysjl";
+        String p="123456";
+        //for (int i=0;i<userList.size();i++){
+           if (current.getAccount().equals(a) && current.getPwd().equals(p))
                 return "Home";
-        }
-        return "index";
+        //}
+            else return "index";
     }
     
 
@@ -88,17 +90,14 @@ public class UserController implements Serializable {
         return "View";
     }
 
-    public String prepareCreate() {
-        current = new User();
-        selectedItemIndex = -1;
-        return "Create";
-    }
 
     public String create() {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserCreated"));
-            return prepareCreate();
+            current = new User();
+            selectedItemIndex = -1;
+            return "Home";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
